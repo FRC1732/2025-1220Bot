@@ -168,7 +168,7 @@ public class Robot extends LoggedRobot {
     robotContainer = new RobotContainer();
 
     // create the CANivore bus object
-    this.canivoreBus = new CANBus(TunerConstants.kCanBusName);
+    this.canivoreBus = new CANBus(TunerConstants.kCANBusName);
 
     // Due to the nature of how Java works, the first run of a path following
     // command could have a
