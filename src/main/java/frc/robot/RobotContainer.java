@@ -12,7 +12,6 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.path.PathPlannerPath;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
@@ -23,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.lib.team3061.util.SysIdRoutineChooser;
 import frc.robot.generated.TunerConstants;
 import frc.robot.operator_interface.OISelector;
@@ -50,13 +50,13 @@ public class RobotContainer {
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
   private double MaxAngularRate =
-      RotationsPerSecond.of(1.5)
+      RotationsPerSecond.of(.75)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
   private final SwerveRequest.FieldCentric drive =
       new SwerveRequest.FieldCentric()
           .withDeadband(MaxSpeed * 0.01)
-          .withRotationalDeadband(MaxAngularRate * 0.01) // Add a 10% deadband
+          .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
           .withDriveRequestType(
               DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -455,17 +455,17 @@ public class RobotContainer {
      */
 
     // reset gyro to 0 degrees
-    // oi.getResetGyroButton()
-    // .onTrue(new InstantCommand(() -> drivetrain.resetRotation(new
-    // Rotation2d())));
     oi.getResetGyroButton()
-        .whileTrue(
-            new InstantCommand(
-                () ->
-                    drivetrain.resetPose(
+        .onTrue(
+            new PrintCommand("Reset gyro button pressed")
+                .andThen(new InstantCommand(() -> drivetrain.resetRotation(new Rotation2d()))));
+    /*  oi.getResetGyroButton()
+            .whileTrue(
+                new InstantCommand(
+                    () -> drivetrain.resetPose(
                         new Pose2d(
-                            drivetrain.getPose().getTranslation(), Rotation2d.fromDegrees(0)))));
-
+           )                 drivetrain.getPose().getTranslation(), Rotation2d.fromDegrees(0)))));
+    */
     // reset pose based on vision
     /*
      * oi.getResetPoseToVisionButton()

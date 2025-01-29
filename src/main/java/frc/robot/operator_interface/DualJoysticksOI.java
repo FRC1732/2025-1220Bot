@@ -57,7 +57,7 @@ public class DualJoysticksOI implements OperatorInterface {
 
   @Override
   public Trigger getResetGyroButton() {
-    return rotateJoystickButtons[8];
+    return translateJoystickButtons[8];
   }
 
   @Override
