@@ -28,6 +28,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.operator_interface.OISelector;
 import frc.robot.operator_interface.OperatorInterface;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.CoralScoring;
 import java.util.Optional;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
@@ -44,6 +45,7 @@ public class RobotContainer {
   private Alliance lastAlliance = Field2d.getInstance().getAlliance();
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+  public final CoralScoring coralScoring = new CoralScoring();
 
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -454,7 +456,8 @@ public class RobotContainer {
 
     // reset gyro to 0 degrees
     // oi.getResetGyroButton()
-    //    .onTrue(new InstantCommand(() -> drivetrain.resetRotation(new Rotation2d())));
+    // .onTrue(new InstantCommand(() -> drivetrain.resetRotation(new
+    // Rotation2d())));
     oi.getResetGyroButton()
         .whileTrue(
             new InstantCommand(
@@ -492,9 +495,13 @@ public class RobotContainer {
   }
 
   private void configureSubsystemCommands() {
-    // FIXME: add commands for the subsystem
-    // oi.getArmTriggerForward().whileTrue(new JointForward(joint));
-    // oi.getArmTriggerBackwards().whileTrue(new JointBackwards(joint));
+    // coral scoring
+    oi.getCoralScoreTrigger()
+        .whileTrue(Commands.runOnce(coralScoring::scores, coralScoring).withName("coral scoring"))
+        .whileFalse(Commands.runOnce(coralScoring::stop, coralScoring).withName("coral stopping"));
+    oi.getCoralReverseTrigger()
+        .whileTrue(Commands.runOnce(coralScoring::reverse, coralScoring).withName("coral reverse"))
+        .whileFalse(Commands.runOnce(coralScoring::stop, coralScoring).withName("coral stopping"));
   }
 
   private void configureVisionCommands() {

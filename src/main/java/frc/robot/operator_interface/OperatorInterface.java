@@ -75,11 +75,11 @@ public interface OperatorInterface {
     return new Trigger(() -> false);
   }
 
-  public default Trigger getArmTriggerForward() {
+  public default Trigger getCoralScoreTrigger() {
     return new Trigger(() -> false);
   }
 
-  public default Trigger getArmTriggerBackwards() {
+  public default Trigger getCoralReverseTrigger() {
     return new Trigger(() -> false);
   }
 

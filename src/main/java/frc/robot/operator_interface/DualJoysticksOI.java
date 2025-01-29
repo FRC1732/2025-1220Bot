@@ -81,16 +81,13 @@ public class DualJoysticksOI implements OperatorInterface {
     return translateJoystickButtons[10];
   }
 
-  /*@Override
-    public Trigger getArmTriggerForward() {
-      return rotateJoystickButtons[3];
-    }
-  */
+  @Override
+  public Trigger getCoralScoreTrigger() {
+    return translateJoystickButtons[1];
+  }
 
-  /*@Override
-    public Trigger getArmTriggerBackwards() {
-      return rotateJoystickButtons[2];
-    }
-  */
-
+  @Override
+  public Trigger getCoralReverseTrigger() {
+    return translateJoystickButtons[2];
+  }
 }
