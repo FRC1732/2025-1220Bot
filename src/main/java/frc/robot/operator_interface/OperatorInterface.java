@@ -89,4 +89,7 @@ public interface OperatorInterface {
   public default Trigger getInterruptAll() {
     return new Trigger(() -> false);
   }
+  public default Trigger getFasterScoreTrigger() {
+    return new Trigger(() -> false);
+  }
 }
