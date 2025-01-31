@@ -17,7 +17,7 @@ public class CoralScoring extends SubsystemBase {
   }
 
   public void scores() {
-    coralMotor.set(.30);
+    coralMotor.set(.37);
   }
 
   public void stop() {
@@ -25,7 +25,7 @@ public class CoralScoring extends SubsystemBase {
   }
 
   public void reverse() {
-    coralMotor.set(-.30);
+    coralMotor.set(-.50);
   }
 
   @Override
