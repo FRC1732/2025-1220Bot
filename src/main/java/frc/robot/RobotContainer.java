@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.lib.team3061.RobotConfig;
+import frc.robot.configs.CompRobotConfig;
 import frc.robot.generated.TunerConstants;
 import frc.robot.operator_interface.OISelector;
 import frc.robot.operator_interface.OperatorInterface;
@@ -35,6 +37,9 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  @SuppressWarnings("unused")
+  private RobotConfig config;
+
   private OperatorInterface oi = new OperatorInterface() {};
 
   private Alliance lastAlliance = Field2d.getInstance().getAlliance();
@@ -95,11 +100,8 @@ public class RobotContainer {
    */
   private void createRobotConfig() {
     switch (Constants.getRobot()) {
-      case ROBOT_PRACTICE:
-        // config = new PracticeRobotConfig();
-        break;
-      case ROBOT_COMPETITION, ROBOT_SIMBOT:
-        // config = new CompRobotConfig();
+      case ROBOT_COMPETITION:
+        config = new CompRobotConfig();
         break;
       default:
         break;
@@ -107,7 +109,7 @@ public class RobotContainer {
   }
 
   private void defineSubsystems() {
-    // subsystem instanciation goes here
+    // CoralScoring instanciated above
   }
 
   /**
@@ -145,35 +147,6 @@ public class RobotContainer {
     configureSubsystemCommands();
 
     configureVisionCommands();
-
-    // Endgame alerts
-    /*
-     * new Trigger(
-     * () ->
-     * DriverStation.isTeleopEnabled()
-     * && DriverStation.getMatchTime() > 0.0
-     * && DriverStation.getMatchTime() <= Math.round(endgameAlert1.get()))
-     * .onTrue(
-     * Commands.run(() ->
-     * LEDs.getInstance().requestState(LEDs.States.ENDGAME_ALERT))
-     * .withTimeout(1));
-     */
-    /*
-     * new Trigger(
-     * () ->
-     * DriverStation.isTeleopEnabled()
-     * && DriverStation.getMatchTime() > 0.0
-     * && DriverStation.getMatchTime() <= Math.round(endgameAlert2.get()))
-     * .onTrue(
-     * Commands.sequence(
-     * Commands.run(() ->
-     * LEDs.getInstance().requestState(LEDs.States.ENDGAME_ALERT))
-     * .withTimeout(0.5),
-     * Commands.waitSeconds(0.25),
-     * Commands.run(() ->
-     * LEDs.getInstance().requestState(LEDs.States.ENDGAME_ALERT))
-     * .withTimeout(0.5)));
-     */
 
     // interrupt all commands by running a command that requires every subsystem.
     // This is used to
@@ -290,7 +263,6 @@ public class RobotContainer {
     Optional<Alliance> alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() != lastAlliance) {
       this.lastAlliance = alliance.get();
-      // this.drivetrain.updateAlliance(this.lastAlliance);
       Field2d.getInstance().updateAlliance(this.lastAlliance);
     }
   }

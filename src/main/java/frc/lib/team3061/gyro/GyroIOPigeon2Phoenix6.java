@@ -4,8 +4,9 @@
 
 package frc.lib.team3061.gyro;
 
-import static edu.wpi.first.units.Units.*;
 // import static frc.lib.team3061.drivetrain.DrivetrainConstants.SUBSYSTEM_NAME;
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
@@ -16,9 +17,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.RobotController;
 import frc.lib.team3061.RobotConfig;
-import frc.robot.Constants;
 
 public class GyroIOPigeon2Phoenix6 implements GyroIO {
   private final Pigeon2 gyro;
@@ -50,11 +49,7 @@ public class GyroIOPigeon2Phoenix6 implements GyroIO {
     this.angularVelocityZStatusSignal = this.gyro.getAngularVelocityZWorld().clone();
     this.angularVelocityZStatusSignal.setUpdateFrequency(100);
 
-    if (Constants.getMode() == Constants.Mode.SIM) {
-      this.gyroSim = this.gyro.getSimState();
-    } else {
-      this.gyroSim = null;
-    }
+    this.gyroSim = null;
   }
 
   @Override
@@ -88,9 +83,5 @@ public class GyroIOPigeon2Phoenix6 implements GyroIO {
     inputs.rollDegPerSec = this.angularVelocityXStatusSignal.getValue().in(DegreesPerSecond);
     inputs.pitchDegPerSec = this.angularVelocityYStatusSignal.getValue().in(DegreesPerSecond);
     inputs.yawDegPerSec = this.angularVelocityZStatusSignal.getValue().in(DegreesPerSecond);
-
-    if (Constants.getMode() == Constants.Mode.SIM) {
-      this.gyroSim.setSupplyVoltage(RobotController.getBatteryVoltage());
-    }
   }
 }

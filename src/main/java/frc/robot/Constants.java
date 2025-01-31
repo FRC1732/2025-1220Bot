@@ -7,11 +7,6 @@
  */
 
 package frc.robot;
-
-import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.RobotBase;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -24,58 +19,26 @@ import edu.wpi.first.wpilibj.RobotBase;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
   // set to true in order to change all Tunable values via AdvantageScope
   public static final boolean TUNING_MODE = true;
   public static final boolean DEMO_MODE = false;
 
-  private static final RobotType ROBOT = RobotType.ROBOT_SIMBOT;
+  private static final RobotType ROBOT = RobotType.ROBOT_COMPETITION;
 
-  private static final Alert invalidRobotAlert =
-      new Alert("Invalid robot selected, using competition robot as default.", AlertType.kError);
-
-  // FIXME: update for various robots
   public enum RobotType {
-    ROBOT_DEFAULT,
-    ROBOT_SIMBOT,
-    ROBOT_PRACTICE,
-    ROBOT_COMPETITION,
-    ROBOT_PRACTICE_BOARD,
-    ROBOT_VISION_TEST_PLATFORM
+    ROBOT_COMPETITION
   }
 
-  // FIXME: update for various robots
   public static RobotType getRobot() {
-    if (RobotBase.isReal()) {
-      if (ROBOT == RobotType.ROBOT_SIMBOT) { // Invalid robot selected
-        invalidRobotAlert.set(true);
-        return RobotType.ROBOT_COMPETITION;
-      } else {
-        return ROBOT;
-      }
-    } else {
-      return ROBOT;
-    }
+    return ROBOT;
   }
 
-  // FIXME: update for various robots
   public static Mode getMode() {
-    switch (getRobot()) {
-      case ROBOT_DEFAULT, ROBOT_PRACTICE, ROBOT_PRACTICE_BOARD, ROBOT_COMPETITION:
-        return RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
-
-      case ROBOT_SIMBOT, ROBOT_VISION_TEST_PLATFORM:
-        return Mode.SIM;
-
-      default:
-        return Mode.REAL;
-    }
+    return Mode.REAL;
   }
 
   public enum Mode {
     REAL,
-    REPLAY,
-    SIM
   }
 
   public static final double LOOP_PERIOD_SECS = 0.02;
