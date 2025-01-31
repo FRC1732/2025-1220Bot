@@ -17,7 +17,7 @@ public class CoralScoring extends SubsystemBase {
   }
 
   public void scores() {
-    coralMotor.set(.37);
+    coralMotor.set(.45);
   }
 
   public void stop() {
