@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.lib.team3061.RobotConfig;
+import frc.robot.commands.AdvancedCoralScoring;
 import frc.robot.configs.CompRobotConfig;
 import frc.robot.generated.TunerConstants;
 import frc.robot.operator_interface.OISelector;
@@ -234,7 +235,7 @@ public class RobotContainer {
   private void configureSubsystemCommands() {
     // coral scoring
     oi.getCoralScoreTrigger()
-        .whileTrue(Commands.runOnce(coralScoring::scores, coralScoring).withName("coral scoring"))
+        .whileTrue(new AdvancedCoralScoring(coralScoring))
         .whileFalse(Commands.runOnce(coralScoring::stop, coralScoring).withName("coral stopping"));
     oi.getCoralReverseTrigger()
         .whileTrue(Commands.runOnce(coralScoring::reverse, coralScoring).withName("coral reverse"))
