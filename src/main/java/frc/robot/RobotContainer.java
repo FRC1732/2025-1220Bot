@@ -51,7 +51,7 @@ public class RobotContainer {
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
   private double MaxAngularRate =
-      RotationsPerSecond.of(.75)
+      RotationsPerSecond.of(.5)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
   private final SwerveRequest.FieldCentric drive =
@@ -235,6 +235,7 @@ public class RobotContainer {
   private void configureSubsystemCommands() {
     // coral scoring
     oi.getCoralScoreTrigger()
+        // whileTrue(new PrintCommand("Trigger has been pressed."))
         .whileTrue(new AdvancedCoralScoring(coralScoring))
         .whileFalse(Commands.runOnce(coralScoring::stop, coralScoring).withName("coral stopping"));
     oi.getCoralReverseTrigger()

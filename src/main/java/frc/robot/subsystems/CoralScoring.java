@@ -13,12 +13,12 @@ public class CoralScoring extends SubsystemBase {
 
   /** Creates a new CoralScoring. */
   public CoralScoring() {
-    coralMotor = new SparkMax(50, SparkBase.MotorType.kBrushed);
+    coralMotor = new SparkMax(50, SparkBase.MotorType.kBrushless);
   }
 
   public void scores() {
 
-    coralMotor.set(.50);
+    coralMotor.set(-.50);
   }
 
   public void stop() {
@@ -26,7 +26,7 @@ public class CoralScoring extends SubsystemBase {
   }
 
   public void reverse() {
-    coralMotor.set(-.50);
+    coralMotor.set(.50);
   }
 
   @Override

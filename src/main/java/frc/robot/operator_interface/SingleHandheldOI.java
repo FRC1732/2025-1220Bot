@@ -4,85 +4,60 @@
 
 package frc.robot.operator_interface;
 
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /** Class for controlling the robot with a single Xbox controller. */
 public class SingleHandheldOI implements OperatorInterface {
-  private final CommandXboxController controller;
+  private final CommandJoystick controller;
+  private final Trigger[] triggerButtons;
 
   public SingleHandheldOI(int port) {
-    controller = new CommandXboxController(port);
+    controller = new CommandJoystick(port);
+
+    // buttons use 1-based indexing such that the index matches the button number; leave index 0 set
+    // to null
+    this.triggerButtons = new Trigger[11];
+
+    for (int i = 1; i < triggerButtons.length; i++) {
+      triggerButtons[i] = controller.button(i);
+    }
   }
 
   @Override
   public double getTranslateX() {
-    return -controller.getLeftY();
+    return -controller.getRawAxis(1);
   }
 
   @Override
   public double getTranslateY() {
-    return -controller.getLeftX();
+    return -controller.getRawAxis(0);
   }
 
   @Override
   public double getRotate() {
-    return -controller.getRightX();
-  }
-
-  @Override
-  public Trigger getFieldRelativeButton() {
-    return controller.b();
+    return -controller.getRawAxis(4);
   }
 
   @Override
   public Trigger getResetGyroButton() {
-    return controller.start();
+    return triggerButtons[4];
   }
 
   @Override
   public Trigger getXStanceButton() {
-    return controller.y();
+    return triggerButtons[3];
   }
 
   @Override
-  public Trigger getTranslationSlowModeButton() {
-    return controller.leftBumper();
+  public Trigger getCoralScoreTrigger() {
+    // double value1 = controller.getRawAxis(2);
+    // double value2 = controller.getRawAxis(3);
+    return new Trigger(() -> controller.getRawAxis(2) > 0.5 || controller.getRawAxis(3) > 0.5);
   }
 
   @Override
-  public Trigger getRotationSlowModeButton() {
-    return controller.rightBumper();
-  }
-
-  @Override
-  public Trigger getVisionIsEnabledSwitch() {
-    // vision is always enabled with Xbox as there is no switch to disable
-    return new Trigger(() -> true);
-  }
-
-  @Override
-  public Trigger getLock180Button() {
-    return controller.a();
-  }
-
-  @Override
-  public Trigger getSysIdDynamicForward() {
-    return controller.back().and(controller.y());
-  }
-
-  @Override
-  public Trigger getSysIdDynamicReverse() {
-    return controller.back().and(controller.x());
-  }
-
-  @Override
-  public Trigger getSysIdQuasistaticForward() {
-    return controller.start().and(controller.y());
-  }
-
-  @Override
-  public Trigger getSysIdQuasistaticReverse() {
-    return controller.start().and(controller.x());
+  public Trigger getCoralReverseTrigger() {
+    return triggerButtons[5].or(triggerButtons[6]);
   }
 }

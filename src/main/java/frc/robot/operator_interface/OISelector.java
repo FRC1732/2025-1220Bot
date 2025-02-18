@@ -86,10 +86,10 @@ public class OISelector {
       noOperatorInterfaceWarning.set(false);
       nonCompetitionOperatorInterfaceWarning.set(true);
       return new DualJoysticksOI(firstPort, secondPort);
-    } else if (xBoxPort != null) {
+    } else if (firstPort != null) {
       noOperatorInterfaceWarning.set(false);
       nonCompetitionOperatorInterfaceWarning.set(true);
-      return new SingleHandheldOI(xBoxPort);
+      return new SingleHandheldOI(firstPort);
     } else {
       noOperatorInterfaceWarning.set(true);
       nonCompetitionOperatorInterfaceWarning.set(true);
