@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "OvalTestFast1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "OvalTestFast2"
+            "pathName": "Score LEAVE Points R"
           }
         }
       ]

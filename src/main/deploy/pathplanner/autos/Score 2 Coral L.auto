@@ -7,50 +7,55 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Start-R1"
+            "pathName": "Score 1st Coral L"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralScoring"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "R1-HP"
+            "pathName": "Get Second Coral L"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP-R2"
+            "pathName": "Score Second Coral L"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "R2-HP"
-          }
-        },
-  
-        {
-          "type": "path",
-          "data": {
-            "pathName": "HP-R3"
+            "name": "coralScoring"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "R3-HP"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "HP-R4"
+            "waitTime": 1.0
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Reefscape",
+  "folder": null,
   "choreoAuto": false
 }

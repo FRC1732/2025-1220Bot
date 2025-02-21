@@ -10,8 +10,11 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -165,14 +168,39 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
+   NamedCommands.registerCommand("scoreCoral", new AdvancedCoralScoring(coralScoring));
+   
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
     new EventTrigger("ZoneMarker").onFalse(Commands.print("left zone"));
+
 
     // build auto path commands
 
     // add commands to the auto chooser
     autoChooser.addDefaultOption("Do Nothing", new InstantCommand());
+
+    Command getLeavePointsR = new PathPlannerAuto("LeaveR");
+    autoChooser.addOption("Score Leave Points on Right", getLeavePointsR);
+
+    Command getLeavePointsL = new PathPlannerAuto("LeaveL");
+    autoChooser.addOption("Score Leave Points on Left", getLeavePointsL);
+
+    Command score3CoralR = new PathPlannerAuto("Score 3 Coral R");
+    autoChooser.addOption("Score 3 Coral on Right", score3CoralR);
+
+    Command score2CoralL = new PathPlannerAuto("Score 2 Coral L");
+    autoChooser.addOption("Score 2 Coral on Left", score2CoralL);
+
+    Command scoreMiddle = new PathPlannerAuto("Middle");
+    autoChooser.addOption("Score Middle", scoreMiddle);
+
+
+
+
+
+
+
   }
 
   private void configureDrivetrainCommands() {
