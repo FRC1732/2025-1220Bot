@@ -74,6 +74,9 @@ public class CompRobotConfig extends RobotConfig {
   private static final double DRIVE_FACING_ANGLE_KD = 0.1;
   private static final double DRIVE_FACING_ANGLE_KI = 0.0;
 
+  public static final double FORWARD_SCORE_PERCENT = .20; // 20%
+  public static final double BACKWARD_SCORE_PERCENT = .05; // 5%
+
   @Override
   public boolean getPhoenix6Licensed() {
     return true;
