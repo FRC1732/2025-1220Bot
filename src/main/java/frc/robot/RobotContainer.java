@@ -196,6 +196,9 @@ public class RobotContainer {
 
     Command scoreMiddle = new PathPlannerAuto("Middle");
     autoChooser.addOption("Score Middle", scoreMiddle);
+
+    Command getLeavePointsRightRed = new PathPlannerAuto("GetLeavePointsRightRed");
+    autoChooser.addOption("Score Leave Points Right Red", getLeavePointsRightRed);
   }
 
   private void configureDrivetrainCommands() {
