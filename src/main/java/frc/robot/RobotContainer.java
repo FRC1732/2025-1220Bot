@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.lib.team3061.RobotConfig;
 import frc.robot.commands.AdvancedCoralScoring;
+import frc.robot.commands.AutoAdvancedCoralScoring;
 import frc.robot.configs.CompRobotConfig;
 import frc.robot.generated.TunerConstants;
 import frc.robot.operator_interface.OISelector;
@@ -169,6 +170,7 @@ public class RobotContainer {
   private void configureAutoCommands() {
     // Event Markers
    NamedCommands.registerCommand("scoreCoral", new AdvancedCoralScoring(coralScoring));
+   NamedCommands.registerCommand("autoScoring", new AutoAdvancedCoralScoring(coralScoring));
    
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
@@ -194,13 +196,6 @@ public class RobotContainer {
 
     Command scoreMiddle = new PathPlannerAuto("Middle");
     autoChooser.addOption("Score Middle", scoreMiddle);
-
-
-
-
-
-
-
   }
 
   private void configureDrivetrainCommands() {

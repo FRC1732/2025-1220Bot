@@ -13,25 +13,19 @@
         {
           "type": "named",
           "data": {
-            "name": "coralScoring"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "autoScoring"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Get Second Coral L"
+            "pathName": "GetSecondCoralL"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 3.5
+            "waitTime": 4.0
           }
         },
         {
@@ -43,13 +37,13 @@
         {
           "type": "named",
           "data": {
-            "name": "coralScoring"
+            "name": "autoScoring"
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 1.0
+            "pathName": "Get Third Coral L"
           }
         }
       ]
