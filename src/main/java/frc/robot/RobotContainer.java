@@ -182,23 +182,18 @@ public class RobotContainer {
     // add commands to the auto chooser
     autoChooser.addDefaultOption("Do Nothing", new InstantCommand());
 
-    Command getLeavePointsR = new PathPlannerAuto("LeaveR");
-    autoChooser.addOption("Score Leave Points on Right", getLeavePointsR);
+    Command getLeavePointsLeftRed = new PathPlannerAuto("Leave Left Red");
+    autoChooser.addOption("Leave Left Red", getLeavePointsLeftRed);
 
-    Command getLeavePointsL = new PathPlannerAuto("LeaveL");
-    autoChooser.addOption("Score Leave Points on Left", getLeavePointsL);
+    Command getLeavePointsRightRed = new PathPlannerAuto("Leave Right Red");
+    autoChooser.addOption("Leave Right Red", getLeavePointsRightRed);
 
-    Command score3CoralR = new PathPlannerAuto("Score 3 Coral R");
-    autoChooser.addOption("Score 3 Coral on Right", score3CoralR);
+    Command getLeavePointsRightBlue = new PathPlannerAuto("Leave Right Blue");
+    autoChooser.addOption("Leave Right Red", getLeavePointsRightBlue);
+   
+    Command getLeavePointsLeftBlue = new PathPlannerAuto("Leave Left Blue");
+    autoChooser.addOption("Leave Right Red", getLeavePointsLeftBlue);
 
-    Command score2CoralL = new PathPlannerAuto("Score 2 Coral L");
-    autoChooser.addOption("Score 2 Coral on Left", score2CoralL);
-
-    Command scoreMiddle = new PathPlannerAuto("Middle");
-    autoChooser.addOption("Score Middle", scoreMiddle);
-
-    Command getLeavePointsRightRed = new PathPlannerAuto("GetLeavePointsRightRed");
-    autoChooser.addOption("Score Leave Points Right Red", getLeavePointsRightRed);
   }
 
   private void configureDrivetrainCommands() {
