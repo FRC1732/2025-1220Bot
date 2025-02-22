@@ -14,7 +14,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -169,13 +168,12 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
-   NamedCommands.registerCommand("scoreCoral", new AdvancedCoralScoring(coralScoring));
-   NamedCommands.registerCommand("autoScoring", new AutoAdvancedCoralScoring(coralScoring));
-   
+    NamedCommands.registerCommand("scoreCoral", new AdvancedCoralScoring(coralScoring));
+    NamedCommands.registerCommand("autoScoring", new AutoAdvancedCoralScoring(coralScoring));
+
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
     new EventTrigger("ZoneMarker").onFalse(Commands.print("left zone"));
-
 
     // build auto path commands
 
@@ -190,7 +188,7 @@ public class RobotContainer {
 
     Command getLeavePointsRightBlue = new PathPlannerAuto("Leave Right Blue");
     autoChooser.addOption("Leave Right Red", getLeavePointsRightBlue);
-   
+
     Command getLeavePointsLeftBlue = new PathPlannerAuto("Leave Left Blue");
     autoChooser.addOption("Leave Right Red", getLeavePointsLeftBlue);
 
@@ -199,7 +197,7 @@ public class RobotContainer {
 
     Command leaveMiddleRedAndGoLeft = new PathPlannerAuto("Leave Middle Red and Go Left");
     autoChooser.addOption("Leave Middle Red and Go Left", leaveMiddleRedAndGoLeft);
-    
+
     Command leaveMiddleBlueAndGoLeft = new PathPlannerAuto("Leave Middle Blue and Go Left");
     autoChooser.addOption("Leave Middle Blue and Go Left", leaveMiddleBlueAndGoLeft);
 
@@ -208,7 +206,6 @@ public class RobotContainer {
 
     Command score1CoralLeftBlue = new PathPlannerAuto("Score 1 Coral Left Blue");
     autoChooser.addOption("Score 1 Coral Left Blue", score1CoralLeftBlue);
-
   }
 
   private void configureDrivetrainCommands() {
