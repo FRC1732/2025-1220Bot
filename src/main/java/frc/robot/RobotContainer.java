@@ -194,6 +194,21 @@ public class RobotContainer {
     Command getLeavePointsLeftBlue = new PathPlannerAuto("Leave Left Blue");
     autoChooser.addOption("Leave Right Red", getLeavePointsLeftBlue);
 
+    Command leaveMiddleRedAndGoRight = new PathPlannerAuto("Leave Middle Red and Go Right");
+    autoChooser.addOption("Leave Middle Red and Go Right", leaveMiddleRedAndGoRight);
+
+    Command leaveMiddleRedAndGoLeft = new PathPlannerAuto("Leave Middle Red and Go Left");
+    autoChooser.addOption("Leave Middle Red and Go Left", leaveMiddleRedAndGoLeft);
+    
+    Command leaveMiddleBlueAndGoLeft = new PathPlannerAuto("Leave Middle Blue and Go Left");
+    autoChooser.addOption("Leave Middle Blue and Go Left", leaveMiddleBlueAndGoLeft);
+
+    Command leaveMiddleBlueAndGoRight = new PathPlannerAuto("Leave Middle Blue and Go Right");
+    autoChooser.addOption("Leave Middle Blue and Go Right", leaveMiddleBlueAndGoRight);
+
+    Command score1CoralLeftBlue = new PathPlannerAuto("Score 1 Coral Left Blue");
+    autoChooser.addOption("Score 1 Coral Left Blue", score1CoralLeftBlue);
+
   }
 
   private void configureDrivetrainCommands() {
