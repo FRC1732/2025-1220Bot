@@ -1,0 +1,45 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+/*
+ * Initially from https://github.com/Mechanical-Advantage/RobotCode2022
+ */
+
+package frc.robot;
+/**
+ * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants should be declared
+ * globally (i.e. public static). Do not put anything functional in this class.
+ *
+ * <p>Subsystem-specific constants should be defined in the subsystem's own constant class.
+ * Constants that vary from robot to robot should be defined in the config classes.
+ *
+ * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * constants are needed, to reduce verbosity.
+ */
+public final class Constants {
+  // set to true in order to change all Tunable values via AdvantageScope
+  public static final boolean TUNING_MODE = true;
+  public static final boolean DEMO_MODE = false;
+
+  private static final RobotType ROBOT = RobotType.ROBOT_COMPETITION;
+
+  public enum RobotType {
+    ROBOT_COMPETITION
+  }
+
+  public static RobotType getRobot() {
+    return ROBOT;
+  }
+
+  public static Mode getMode() {
+    return Mode.REAL;
+  }
+
+  public enum Mode {
+    REAL,
+  }
+
+  public static final double LOOP_PERIOD_SECS = 0.02;
+}
