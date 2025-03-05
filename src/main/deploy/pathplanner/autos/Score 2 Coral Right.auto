@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Score 1 Coral Left Red"
+            "pathName": "Score First Coral Right"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "autoScoring"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Get Second Coral Right"
           }
         }
       ]
