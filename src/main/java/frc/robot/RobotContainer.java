@@ -14,7 +14,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -169,13 +168,12 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
-   NamedCommands.registerCommand("scoreCoral", new AdvancedCoralScoring(coralScoring));
-   NamedCommands.registerCommand("autoScoring", new AutoAdvancedCoralScoring(coralScoring));
-   
+    NamedCommands.registerCommand("scoreCoral", new AdvancedCoralScoring(coralScoring));
+    NamedCommands.registerCommand("autoScoring", new AutoAdvancedCoralScoring(coralScoring));
+
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
     new EventTrigger("ZoneMarker").onFalse(Commands.print("left zone"));
-
 
     // build auto path commands
 
@@ -208,12 +206,6 @@ public class RobotContainer {
 
     Command leaveRight = new PathPlannerAuto("Leave Right");
     autoChooser.addOption("Leave Right", leaveRight);
-
-    
-
-
-
-
   }
 
   private void configureDrivetrainCommands() {
