@@ -53,7 +53,7 @@ public class RobotContainer {
   public final CoralScoring coralScoring = new CoralScoring();
 
   private double MaxSpeed =
-      TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+      TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * .2; // kSpeedAt12Volts desired top speed
   private double MaxAngularRate =
       RotationsPerSecond.of(.5)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
