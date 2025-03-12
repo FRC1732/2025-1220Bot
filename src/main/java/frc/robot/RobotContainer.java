@@ -11,10 +11,8 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -24,14 +22,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.lib.team3061.RobotConfig;
-import frc.robot.commands.AdvancedCoralScoring;
-import frc.robot.commands.AutoAdvancedCoralScoring;
 import frc.robot.configs.CompRobotConfig;
 import frc.robot.generated.TunerConstants;
 import frc.robot.operator_interface.OISelector;
 import frc.robot.operator_interface.OperatorInterface;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.CoralScoring;
+import frc.robot.subsystems.NewIntake;
 import java.util.Optional;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -50,7 +46,7 @@ public class RobotContainer {
   private Alliance lastAlliance = Field2d.getInstance().getAlliance();
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-  public final CoralScoring coralScoring = new CoralScoring();
+  public final NewIntake newIntake = new NewIntake();
 
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * .2; // kSpeedAt12Volts desired top speed
@@ -169,63 +165,16 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
-   NamedCommands.registerCommand("scoreCoral", new AdvancedCoralScoring(coralScoring));
-   NamedCommands.registerCommand("autoScoring", new AutoAdvancedCoralScoring(coralScoring));
-   
+    NamedCommands.registerCommand("scoreCoral", newIntake.moveIntake(1.0));
+
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
     new EventTrigger("ZoneMarker").onFalse(Commands.print("left zone"));
-
 
     // build auto path commands
 
     // add commands to the auto chooser
     autoChooser.addDefaultOption("Do Nothing", new InstantCommand());
-
-    Command getLeavePointsLeftRed = new PathPlannerAuto("Leave Left Red");
-    autoChooser.addOption("Leave Left Red", getLeavePointsLeftRed);
-
-    Command getLeavePointsRightRed = new PathPlannerAuto("Leave Right Red");
-    autoChooser.addOption("Leave Right Red", getLeavePointsRightRed);
-
-    Command getLeavePointsRightBlue = new PathPlannerAuto("Leave Right Blue");
-    autoChooser.addOption("Leave Right Red", getLeavePointsRightBlue);
-   
-    Command getLeavePointsLeftBlue = new PathPlannerAuto("Leave Left Blue");
-    autoChooser.addOption("Leave Right Red", getLeavePointsLeftBlue);
-
-    Command leaveMiddleRedAndGoRight = new PathPlannerAuto("Leave Middle Red and Go Right");
-    autoChooser.addOption("Leave Middle Red and Go Right", leaveMiddleRedAndGoRight);
-
-    Command leaveMiddleRedAndGoLeft = new PathPlannerAuto("Leave Middle Red and Go Left");
-    autoChooser.addOption("Leave Middle Red and Go Left", leaveMiddleRedAndGoLeft);
-    
-    Command leaveMiddleBlueAndGoLeft = new PathPlannerAuto("Leave Middle Blue and Go Left");
-    autoChooser.addOption("Leave Middle Blue and Go Left", leaveMiddleBlueAndGoLeft);
-
-    Command leaveMiddleBlueAndGoRight = new PathPlannerAuto("Leave Middle Blue and Go Right");
-    autoChooser.addOption("Leave Middle Blue and Go Right", leaveMiddleBlueAndGoRight);
-
-    Command score1CoralLeftBlue = new PathPlannerAuto("Score 1 Coral Left Blue");
-    autoChooser.addOption("Score 1 Coral Left Blue", score1CoralLeftBlue);
-
-    Command score1CoralLeftRed = new PathPlannerAuto("Score 1 Coral Left Red");
-    autoChooser.addOption("Score 1 Coral Left Red", score1CoralLeftRed);
-
-    Command score1CoralRightRed = new PathPlannerAuto("Score 1 Coral Right Red");
-    autoChooser.addOption("Score 1 Coral Right Red", score1CoralRightRed);
-
-    Command score1CoralMiddleRed = new PathPlannerAuto("Score 1 Coral Middle Red");
-    autoChooser.addOption("Score 1 Coral Middle Red", score1CoralMiddleRed);
-
-    Command score1CoralRightBlue = new PathPlannerAuto("Score 1 Coral Right Blue");
-    autoChooser.addOption("Score 1 Coral Right Blue", score1CoralRightBlue);
-
-    Command score1CoralMiddleBlue = new PathPlannerAuto("Score 1 Coral Middle Blue");
-    autoChooser.addOption("Score 1 Coral Middle Blue", score1CoralMiddleBlue);
-
-
-
   }
 
   private void configureDrivetrainCommands() {
@@ -289,11 +238,11 @@ public class RobotContainer {
     // coral scoring
     oi.getCoralScoreTrigger()
         // whileTrue(new PrintCommand("Trigger has been pressed."))
-        .whileTrue(new AdvancedCoralScoring(coralScoring))
-        .whileFalse(Commands.runOnce(coralScoring::stop, coralScoring).withName("coral stopping"));
+        .whileTrue(newIntake.moveIntake(1.00))
+        .whileFalse(newIntake.moveIntake(0.0).withName("coral stopping"));
     oi.getCoralReverseTrigger()
-        .whileTrue(Commands.runOnce(coralScoring::reverse, coralScoring).withName("coral reverse"))
-        .whileFalse(Commands.runOnce(coralScoring::stop, coralScoring).withName("coral stopping"));
+        .whileTrue(newIntake.moveIntake(-1.0).withName("coral reverse"))
+        .whileFalse(newIntake.moveIntake(0.0).withName("coral stopping"));
   }
 
   private void configureVisionCommands() {

@@ -1,19 +1,16 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.*;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
+import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class NewIntake extends SubsystemBase {
   SparkMax intakeMotor1, intakeMotor2;
   SparkMaxConfig intakeMotor1Config, intakeMotor2Config;
-
 
   /** Creates a new Intake. */
   public NewIntake() {
@@ -23,27 +20,21 @@ public class NewIntake extends SubsystemBase {
     intakeMotor1Config = new SparkMaxConfig();
     intakeMotor2Config = new SparkMaxConfig();
 
+    intakeMotor1.configure(
+        intakeMotor1Config.inverted(false).idleMode(IdleMode.kBrake),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kPersistParameters);
 
-    intakeMotor1.configure(intakeMotor1Config.
-      inverted(false).
-      idleMode(IdleMode.kBrake), 
-      ResetMode.kNoResetSafeParameters, 
-      PersistMode.kPersistParameters);
-
-    intakeMotor2.configure(intakeMotor2Config.
-      idleMode(IdleMode.kBrake).
-      follow(8), 
-      ResetMode.kNoResetSafeParameters, 
-      PersistMode.kPersistParameters);
-
-
+    intakeMotor2.configure(
+        intakeMotor2Config.idleMode(IdleMode.kBrake).follow(8),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kPersistParameters);
   }
 
   public Command moveIntake(Double velocity) {
     // Inline construction of command goes here.
     return run(
         () -> {
-          
           intakeMotor1.set(velocity);
         });
   }
@@ -53,7 +44,6 @@ public class NewIntake extends SubsystemBase {
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
