@@ -26,6 +26,7 @@ import frc.robot.configs.CompRobotConfig;
 import frc.robot.generated.TunerConstants;
 import frc.robot.operator_interface.OISelector;
 import frc.robot.operator_interface.OperatorInterface;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.NewIntake;
 import java.util.Optional;
@@ -243,7 +244,12 @@ public class RobotContainer {
     oi.getCoralReverseTrigger()
         .whileTrue(newIntake.forwardIntake(-1.0).withName("coral reverse"))
         .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
+    oi.getForwardArmTrigger()
+    .whileTrue(new Arm().forwardArm(1.0))
+    .whileFalse(new Arm().forwardArm(0.0));
   }
+
+ 
 
   private void configureVisionCommands() {
     // enable/disable vision

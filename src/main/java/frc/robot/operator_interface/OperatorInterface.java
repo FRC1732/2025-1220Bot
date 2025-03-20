@@ -83,6 +83,16 @@ public interface OperatorInterface {
     return new Trigger(() -> false);
   }
 
+  public default Trigger getForwardArmTrigger() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger getReverseArmTrigger() {
+    return new Trigger(() -> false);
+  }
+
+  
+
   // drivetrain, game-specific
 
   // miscellaneous
