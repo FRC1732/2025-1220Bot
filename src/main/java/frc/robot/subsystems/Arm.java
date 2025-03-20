@@ -20,8 +20,8 @@ public class Arm extends SubsystemBase {
 
   /** Creates a new Arm. */
   public Arm() {
-    armMotor1 = new SparkMax(6, MotorType.kBrushed);
-    armMotor2 = new SparkMax(7, MotorType.kBrushed);
+    armMotor1 = new SparkMax(60, MotorType.kBrushed);
+    armMotor2 = new SparkMax(61, MotorType.kBrushed);
 
     armMotor1Config = new SparkMaxConfig();
     armMotor2Config = new SparkMaxConfig();

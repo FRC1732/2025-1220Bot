@@ -9,13 +9,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class NewIntake extends SubsystemBase {
+
   SparkMax intakeMotor1, intakeMotor2;
   SparkMaxConfig intakeMotor1Config, intakeMotor2Config;
 
   /** Creates a new Intake. */
   public NewIntake() {
-    intakeMotor1 = new SparkMax(8, MotorType.kBrushed);
-    intakeMotor2 = new SparkMax(9, MotorType.kBrushed);
+    intakeMotor1 = new SparkMax(51, MotorType.kBrushed);
+    intakeMotor2 = new SparkMax(53, MotorType.kBrushed);
 
     intakeMotor1Config = new SparkMaxConfig();
     intakeMotor2Config = new SparkMaxConfig();
@@ -26,7 +27,7 @@ public class NewIntake extends SubsystemBase {
         PersistMode.kPersistParameters);
 
     intakeMotor2.configure(
-        intakeMotor2Config.idleMode(IdleMode.kBrake).follow(8),
+        intakeMotor2Config.inverted(false).idleMode(IdleMode.kBrake),
         ResetMode.kNoResetSafeParameters,
         PersistMode.kPersistParameters);
   }
@@ -36,6 +37,7 @@ public class NewIntake extends SubsystemBase {
     return run(
         () -> {
           intakeMotor1.set(velocity);
+          intakeMotor2.set(velocity);
         });
   }
 
@@ -44,6 +46,7 @@ public class NewIntake extends SubsystemBase {
     return run(
         () -> {
           intakeMotor1.set(-velocity);
+          intakeMotor2.set(-velocity);
         });
   }
 
