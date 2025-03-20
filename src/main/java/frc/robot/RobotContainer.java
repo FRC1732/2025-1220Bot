@@ -165,7 +165,7 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
-    NamedCommands.registerCommand("scoreCoral", newIntake.moveIntake(1.0));
+    NamedCommands.registerCommand("scoreCoral", newIntake.forwardIntake(1.0));
 
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
@@ -238,11 +238,11 @@ public class RobotContainer {
     // coral scoring
     oi.getCoralScoreTrigger()
         // whileTrue(new PrintCommand("Trigger has been pressed."))
-        .whileTrue(newIntake.moveIntake(1.00))
-        .whileFalse(newIntake.moveIntake(0.0).withName("coral stopping"));
+        .whileTrue(newIntake.forwardIntake(1.00))
+        .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
     oi.getCoralReverseTrigger()
-        .whileTrue(newIntake.moveIntake(-1.0).withName("coral reverse"))
-        .whileFalse(newIntake.moveIntake(0.0).withName("coral stopping"));
+        .whileTrue(newIntake.forwardIntake(-1.0).withName("coral reverse"))
+        .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
   }
 
   private void configureVisionCommands() {

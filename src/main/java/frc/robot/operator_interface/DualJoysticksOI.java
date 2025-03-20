@@ -88,6 +88,6 @@ public class DualJoysticksOI implements OperatorInterface {
 
   @Override
   public Trigger getCoralReverseTrigger() {
-    return translateJoystickButtons[2];
+    return rotateJoystickButtons[1];
   }
 }

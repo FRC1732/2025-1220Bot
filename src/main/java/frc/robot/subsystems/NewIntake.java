@@ -31,11 +31,19 @@ public class NewIntake extends SubsystemBase {
         PersistMode.kPersistParameters);
   }
 
-  public Command moveIntake(Double velocity) {
+  public Command forwardIntake(Double velocity) {
     // Inline construction of command goes here.
     return run(
         () -> {
           intakeMotor1.set(velocity);
+        });
+  }
+
+  public Command reverseIntake(Double velocity) {
+    // Inline construction of command goes here.
+    return run(
+        () -> {
+          intakeMotor1.set(-velocity);
         });
   }
 
