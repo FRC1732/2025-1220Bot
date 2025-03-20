@@ -247,6 +247,9 @@ public class RobotContainer {
     oi.getForwardArmTrigger()
     .whileTrue(new Arm().forwardArm(1.0))
     .whileFalse(new Arm().forwardArm(0.0));
+    oi.getReverseArmTrigger() 
+    .whileTrue(new Arm().forwardArm(-1.0))
+    .whileFalse(new Arm().forwardArm(0.0));
   }
 
  
