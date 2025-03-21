@@ -91,6 +91,8 @@ public interface OperatorInterface {
     return new Trigger(() -> false);
   }
 
+  public default Trigger getClimbingTrigger() { return new Trigger(() -> false); }
+
   
 
   // drivetrain, game-specific

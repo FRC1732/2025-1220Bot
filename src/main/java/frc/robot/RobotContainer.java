@@ -7,6 +7,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.wpilibj2.command.Commands.run;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -48,6 +49,7 @@ public class RobotContainer {
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
   public final NewIntake newIntake = new NewIntake();
+  public final Arm arm = new Arm();
 
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * .2; // kSpeedAt12Volts desired top speed
@@ -245,11 +247,13 @@ public class RobotContainer {
         .whileTrue(newIntake.forwardIntake(-1.0).withName("coral reverse"))
         .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
     oi.getForwardArmTrigger()
-    .whileTrue(new Arm().forwardArm(1.0))
-    .whileFalse(new Arm().forwardArm(0.0));
-    oi.getReverseArmTrigger() 
-    .whileTrue(new Arm().forwardArm(-1.0))
-    .whileFalse(new Arm().forwardArm(0.0));
+            .whileTrue(arm.forwardArm(1.0))
+            .whileFalse(arm.forwardArm(0.0));
+    oi.getReverseArmTrigger()
+            .whileTrue(arm.forwardArm(-1.0))
+            .whileFalse(arm.forwardArm(0.0));
+    oi.getClimbingTrigger()
+            .onTrue(arm.turnClimbMotor());
   }
 
  
