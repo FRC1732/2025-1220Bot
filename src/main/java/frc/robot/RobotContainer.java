@@ -246,12 +246,12 @@ public class RobotContainer {
     oi.getCoralReverseTrigger()
         .whileTrue(newIntake.forwardIntake(-1.0).withName("coral reverse"))
         .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
-    oi.getForwardArmTrigger()
-            .whileTrue(arm.forwardArm(1.0))
-            .whileFalse(arm.forwardArm(0.0));
-    oi.getReverseArmTrigger()
-            .whileTrue(arm.forwardArm(-1.0))
-            .whileFalse(arm.forwardArm(0.0));
+    oi.getUpArmTrigger()
+            .whileTrue(arm.upArm(1.0))
+            .whileFalse(arm.upArm(0.0));
+    oi.getDownArmTrigger()
+            .whileTrue(arm.upArm(-1.0))
+            .whileFalse(arm.upArm(0.0));
     oi.getClimbingTrigger()
             .onTrue(arm.turnClimbMotor());
   }
