@@ -5,7 +5,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
@@ -23,8 +22,8 @@ public class Arm extends SubsystemBase {
 
   /** Creates a new Arm. */
   public Arm() {
-    armMotor1 = new SparkMax(60, MotorType.kBrushed);
-    armMotor2 = new SparkMax(61, MotorType.kBrushed);
+    armMotor1 = new SparkMax(60, MotorType.kBrushless);
+    armMotor2 = new SparkMax(61, MotorType.kBrushless);
 
     climbMotor = new SparkMax(61, MotorType.kBrushless);
 
@@ -52,20 +51,20 @@ public class Arm extends SubsystemBase {
     armP = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
   }
 
-public Command forwardArm(Double velocity) {
-  return run(
-    () -> {
-      armMotor1.set(velocity);
-      armMotor2.set(velocity);
-    });
-}
+  public Command upArm(Double velocity) {
+    return run(
+        () -> {
+          armMotor1.set(velocity);
+          armMotor2.set(velocity);
+        });
+  }
 
-public Command reverseArm(Double velocity) {
-  return run(
-          () -> {
-            armMotor1.set(-velocity);
-            armMotor2.set(-velocity);
-          });
+  public Command downArm(Double velocity) {
+    return run(
+        () -> {
+          armMotor1.set(-velocity);
+          armMotor2.set(-velocity);
+        });
   }
 
   double CLIMB_TURNING_TIME = 1.0;
