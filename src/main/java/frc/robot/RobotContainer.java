@@ -258,6 +258,13 @@ public class RobotContainer {
     oi.getDownArmTrigger()
             .whileTrue(arm.upArm(ArmConstants.armDownSpeed.get()))
             .whileFalse(arm.upArm(ArmConstants.armBrakeSpeed.get()));
+    oi.getMoveToTroughTrigger()
+            .whileTrue(arm.goToSetPoint(ArmConstants.armTroughAngle.get()))
+            .whileFalse(arm.goToSetPoint(ArmConstants.armBrakeSpeed.get()));
+    oi.getMoveToL2Trigger()
+            .whileTrue(arm.goToSetPoint(ArmConstants.armL2Angle.get()))
+            .whileFalse(arm.goToSetPoint(ArmConstants.armBrakeSpeed.get()));
+
     oi.getClimbingTrigger()
             .onTrue(arm.turnClimbMotor());
   }

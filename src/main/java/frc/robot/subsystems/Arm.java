@@ -66,6 +66,15 @@ public class Arm extends SubsystemBase {
         });
   }
 
+  public Command goToSetPoint(double setPoint) {
+    return run(
+        () -> {
+          double output = armP.calculate(encoder.get(), setPoint);
+          armMotor1.set(output);
+          armMotor2.set(output);
+        });
+  }
+
   double CLIMB_TURNING_TIME = 1.0;
 
   public Command turnClimbMotor() {

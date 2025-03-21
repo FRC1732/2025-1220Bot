@@ -10,7 +10,8 @@ public class ArmConstants {
   public static Double positionRemoveAlgaeLow = 0.3083;
   public static Double positionClimbStart = 0.233;
   public static Double positionRemoveAlgaeHigh = 0.1;
-
+  public static LoggedTunableNumber armTroughAngle = new LoggedTunableNumber("Arm/TroughAngle", 61.0);
+  public static LoggedTunableNumber armL2Angle = new LoggedTunableNumber("Arm/L2Angle", 89.0);
   // Define Arm position limits
   public static Double armFrontLimit = 0.422;
   public static Double armRearLimit = 0.05;

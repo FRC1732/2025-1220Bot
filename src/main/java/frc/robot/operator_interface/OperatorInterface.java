@@ -95,6 +95,14 @@ public interface OperatorInterface {
     return new Trigger(() -> false);
   }
 
+  public default Trigger getMoveToTroughTrigger() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger getMoveToL2Trigger() {
+    return new Trigger(() -> false);
+  }
+
   // drivetrain, game-specific
 
   // miscellaneous
