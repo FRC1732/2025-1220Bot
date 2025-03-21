@@ -183,7 +183,7 @@ public class RobotContainer {
      * Set up the default command for the drivetrain. The joysticks' values map to
      * percentage of the maximum velocities. The velocities may be specified from
      * either the robot's frame of reference or the field's frame of reference. In
-     * the robot's frame of reference, the positive x direction is forward; the
+     * the robot's frame of reference, the positive x direction is upArm; the
      * positive y direction, left; position rotation, CCW. In the field frame of
      * reference, the origin of the field to the lower left corner (i.e., the corner
      * of the field to the driver's right). Zero degrees is away from the driver and
@@ -197,7 +197,7 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -oi.getTranslateX() * MaxSpeed) // Drive forward with negative Y (forward)
+                        -oi.getTranslateX() * MaxSpeed) // Drive upArm with negative Y (upArm)
                     .withVelocityY(
                         -oi.getTranslateY() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
@@ -242,17 +242,11 @@ public class RobotContainer {
         .whileTrue(newIntake.forwardIntake(1.00))
         .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
     oi.getCoralReverseTrigger()
-        .whileTrue(newIntake.forwardIntake(-1.0).withName("coral reverse"))
-        .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
-    oi.getForwardArmTrigger()
-    .whileTrue(new Arm().forwardArm(1.0))
-    .whileFalse(new Arm().forwardArm(0.0));
-    oi.getReverseArmTrigger() 
-    .whileTrue(new Arm().forwardArm(-1.0))
-    .whileFalse(new Arm().forwardArm(0.0));
+        .whileTrue(newIntake.reverseIntake(-1.0).withName("coral reverse"))
+        .whileFalse(newIntake.reverseIntake(0.0).withName("coral stopping"));
+    oi.getUpArmTrigger().whileTrue(new Arm().upArm(1.0)).whileFalse(new Arm().upArm(0.0));
+    oi.getDownArmTrigger().whileTrue(new Arm().upArm(-1.0)).whileFalse(new Arm().upArm(0.0));
   }
-
- 
 
   private void configureVisionCommands() {
     // enable/disable vision
