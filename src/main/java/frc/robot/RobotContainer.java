@@ -96,12 +96,10 @@ public class RobotContainer {
     updateOI();
 
     configureAutoCommands();
-
-
   }
 
   private void elasticSetup() {
-    //TODO
+    // TODO
   }
 
   /**
@@ -253,20 +251,19 @@ public class RobotContainer {
         .whileTrue(newIntake.forwardIntake(ArmConstants.armIntakeSpeed.get()).withName("coral reverse"))
         .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
     oi.getUpArmTrigger()
-            .whileTrue(arm.upArm(ArmConstants.armUpSpeed.get()))
-            .whileFalse(arm.upArm(ArmConstants.armBrakeSpeed.get()));
+        .whileTrue(arm.upArm(ArmConstants.armUpSpeed.get()))
+        .whileFalse(arm.breakArm());
     oi.getDownArmTrigger()
             .whileTrue(arm.upArm(ArmConstants.armDownSpeed.get()))
-            .whileFalse(arm.upArm(ArmConstants.armBrakeSpeed.get()));
+            .whileFalse(arm.breakArm());
     oi.getMoveToTroughTrigger()
             .whileTrue(arm.goToSetPoint(ArmConstants.armTroughAngle.get()))
-            .whileFalse(arm.goToSetPoint(ArmConstants.armBrakeSpeed.get()));
+            .whileFalse(arm.breakArm());
     oi.getMoveToL2Trigger()
             .whileTrue(arm.goToSetPoint(ArmConstants.armL2Angle.get()))
-            .whileFalse(arm.goToSetPoint(ArmConstants.armBrakeSpeed.get()));
-
-    oi.getClimbingTrigger()
-            .onTrue(arm.turnClimbMotor());
+            .whileFalse(arm.breakArm());
+    
+    oi.getClimbingTrigger().onTrue(arm.turnClimbMotor());
   }
 
  
