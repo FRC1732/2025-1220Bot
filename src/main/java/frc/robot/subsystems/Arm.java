@@ -19,13 +19,12 @@ public class Arm extends SubsystemBase {
   Double armFrontLimit, armRearLimit, armVelocityLimit;
   boolean isInDefaultPosition;
 
-
   /** Creates a new Arm. */
   public Arm() {
     armMotor1 = new SparkMax(60, MotorType.kBrushless);
     armMotor2 = new SparkMax(61, MotorType.kBrushless);
 
-    climbMotor = new SparkMax(61, MotorType.kBrushless);
+    climbMotor = new SparkMax(62, MotorType.kBrushless);
 
     armMotor1Config = new SparkMaxConfig();
     armMotor2Config = new SparkMaxConfig();
@@ -43,9 +42,9 @@ public class Arm extends SubsystemBase {
         PersistMode.kPersistParameters);
 
     climbMotor.configure(
-            climbMotorConfig.idleMode(IdleMode.kBrake),
-            ResetMode.kNoResetSafeParameters, //TODO: add reset params
-            PersistMode.kPersistParameters);
+        climbMotorConfig.idleMode(IdleMode.kBrake),
+        ResetMode.kNoResetSafeParameters, // TODO: add reset params
+        PersistMode.kPersistParameters);
 
     encoder = new DutyCycleEncoder(0);
     armP = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
@@ -72,15 +71,15 @@ public class Arm extends SubsystemBase {
   public Command turnClimbMotor() {
     Timer a = new Timer();
     return run(() -> {
-      if (isInDefaultPosition) {
-          climbMotor.set(-0.1);
-      } else {
-          climbMotor.set(0.1);
-      }
-    }).onlyWhile(() -> a.get() < CLIMB_TURNING_TIME);
-
+          if (isInDefaultPosition) {
+            climbMotor.set(-0.1);
+          } else {
+            climbMotor.set(0.1);
+          }
+        })
+        .onlyWhile(() -> a.get() < CLIMB_TURNING_TIME);
   }
-  
+
   // public Command moveArmToPosition(Double position) {
   //   return run(
   //       () -> {
