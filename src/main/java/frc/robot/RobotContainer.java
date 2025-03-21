@@ -27,6 +27,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.operator_interface.OISelector;
 import frc.robot.operator_interface.OperatorInterface;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ArmConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.NewIntake;
 import java.util.Optional;
@@ -95,6 +96,12 @@ public class RobotContainer {
     updateOI();
 
     configureAutoCommands();
+
+
+  }
+
+  private void elasticSetup() {
+    //TODO
   }
 
   /**
@@ -240,15 +247,22 @@ public class RobotContainer {
     // coral scoring
     oi.getCoralScoreTrigger()
         // whileTrue(new PrintCommand("Trigger has been pressed."))
-        .whileTrue(newIntake.forwardIntake(1.00))
+        .whileTrue(newIntake.forwardIntake(ArmConstants.armScoringSpeed.get()))
         .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
     oi.getCoralReverseTrigger()
-        .whileTrue(newIntake.forwardIntake(-1.0).withName("coral reverse"))
+        .whileTrue(newIntake.forwardIntake(ArmConstants.armIntakeSpeed.get()).withName("coral reverse"))
         .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
-    oi.getUpArmTrigger().whileTrue(arm.upArm(1.0)).whileFalse(arm.upArm(0.0));
-    oi.getDownArmTrigger().whileTrue(arm.upArm(-1.0)).whileFalse(arm.upArm(0.0));
-    oi.getClimbingTrigger().onTrue(arm.turnClimbMotor());
+    oi.getUpArmTrigger()
+            .whileTrue(arm.upArm(ArmConstants.armUpSpeed.get()))
+            .whileFalse(arm.upArm(ArmConstants.armBrakeSpeed.get()));
+    oi.getDownArmTrigger()
+            .whileTrue(arm.upArm(ArmConstants.armDownSpeed.get()))
+            .whileFalse(arm.upArm(ArmConstants.armBrakeSpeed.get()));
+    oi.getClimbingTrigger()
+            .onTrue(arm.turnClimbMotor());
   }
+
+ 
 
   private void configureVisionCommands() {
     // enable/disable vision

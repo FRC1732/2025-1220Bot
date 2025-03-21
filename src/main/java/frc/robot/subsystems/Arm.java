@@ -47,7 +47,7 @@ public class Arm extends SubsystemBase {
         PersistMode.kPersistParameters);
 
     encoder = new DutyCycleEncoder(0);
-    armP = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
+    armP = new PIDController(ArmConstants.armkP.get(), ArmConstants.armkI.get(), ArmConstants.armkD.get());
   }
 
   public Command upArm(Double velocity) {
