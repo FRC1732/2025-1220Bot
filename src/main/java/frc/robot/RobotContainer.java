@@ -248,25 +248,24 @@ public class RobotContainer {
         .whileTrue(newIntake.forwardIntake(ArmConstants.armScoringSpeed.get()))
         .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
     oi.getCoralReverseTrigger()
-        .whileTrue(newIntake.forwardIntake(ArmConstants.armIntakeSpeed.get()).withName("coral reverse"))
+        .whileTrue(
+            newIntake.forwardIntake(ArmConstants.armIntakeSpeed.get()).withName("coral reverse"))
         .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
     oi.getUpArmTrigger()
         .whileTrue(arm.upArm(ArmConstants.armUpSpeed.get()))
         .whileFalse(arm.breakArm());
     oi.getDownArmTrigger()
-            .whileTrue(arm.upArm(ArmConstants.armDownSpeed.get()))
-            .whileFalse(arm.breakArm());
+        .whileTrue(arm.upArm(ArmConstants.armDownSpeed.get()))
+        .whileFalse(arm.breakArm());
     oi.getMoveToTroughTrigger()
-            .whileTrue(arm.goToSetPoint(ArmConstants.armTroughAngle.get()))
-            .whileFalse(arm.breakArm());
+        .whileTrue(arm.goToSetPoint(ArmConstants.armTroughAngle.get()))
+        .whileFalse(arm.breakArm());
     oi.getMoveToL2Trigger()
-            .whileTrue(arm.goToSetPoint(ArmConstants.armL2Angle.get()))
-            .whileFalse(arm.breakArm());
-    
+        .whileTrue(arm.goToSetPoint(ArmConstants.armL2Angle.get()))
+        .whileFalse(arm.breakArm());
+
     oi.getClimbingTrigger().onTrue(arm.turnClimbMotor());
   }
-
- 
 
   private void configureVisionCommands() {
     // enable/disable vision

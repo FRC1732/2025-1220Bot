@@ -61,14 +61,14 @@ public class Arm extends SubsystemBase {
   }
 
   public Command breakArm() {
-      double dTheta =
-              Math.sin(armMotor1.getAbsoluteEncoder().getPosition() * 2 * Math.PI) *
-                      ArmConstants.armBrakeSpeedTheta.get();
-      return run(
-              () -> {
-                  armMotor1.set(dTheta);
-                  armMotor2.set(dTheta);
-              });
+    double dTheta =
+        Math.sin(armMotor1.getAbsoluteEncoder().getPosition() * 2 * Math.PI)
+            * ArmConstants.armBrakeSpeedTheta.get();
+    return run(
+        () -> {
+          armMotor1.set(dTheta);
+          armMotor2.set(dTheta);
+        });
   }
 
   public Command downArm(Double velocity) {
@@ -136,5 +136,4 @@ public class Arm extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-
 }
