@@ -5,7 +5,6 @@
 package frc.robot.operator_interface;
 
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -13,15 +12,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * panel.
  */
 public class FullOperatorConsoleOI extends DualJoysticksOI {
-  private final CommandXboxController operatorController;
 
   private final CommandJoystick operatorPanel;
   private final Trigger[] operatorPanelButtons;
 
-  public FullOperatorConsoleOI(
-      int translatePort, int rotatePort, int operatorControllerPort, int operatorPanelPort) {
+  public FullOperatorConsoleOI(int translatePort, int rotatePort, int operatorPanelPort) {
     super(translatePort, rotatePort);
-    operatorController = new CommandXboxController(operatorControllerPort);
     operatorPanel = new CommandJoystick(operatorPanelPort);
 
     // buttons use 1-based indexing such that the index matches the button number; leave index 0 set
@@ -32,36 +28,24 @@ public class FullOperatorConsoleOI extends DualJoysticksOI {
     }
   }
 
-  // Operator Controller
-  @Override
-  public Trigger getInterruptAll() {
-    return operatorController.start();
-  }
-
-  @Override
-  public Trigger getSysIdDynamicForward() {
-    return operatorController.back().and(operatorController.y());
-  }
-
-  @Override
-  public Trigger getSysIdDynamicReverse() {
-    return operatorController.back().and(operatorController.x());
-  }
-
-  @Override
-  public Trigger getSysIdQuasistaticForward() {
-    return operatorController.start().and(operatorController.y());
-  }
-
-  @Override
-  public Trigger getSysIdQuasistaticReverse() {
-    return operatorController.start().and(operatorController.x());
-  }
-
   // Operator Panel
-
   @Override
   public Trigger getVisionIsEnabledSwitch() {
     return operatorPanelButtons[10];
+  }
+
+  @Override
+  public Trigger goToStartClimbPosition() {
+    return operatorPanelButtons[2];
+  }
+
+  @Override
+  public Trigger goToRetractClimbPosition() {
+    return operatorPanelButtons[3];
+  }
+
+  @Override
+  public Trigger getClimbingTrigger() {
+    return operatorPanelButtons[1];
   }
 }

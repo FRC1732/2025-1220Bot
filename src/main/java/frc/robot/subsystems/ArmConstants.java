@@ -11,23 +11,25 @@ public class ArmConstants {
   public static Double positionClimbStart = 0.233;
   public static Double positionRemoveAlgaeHigh = 0.1;
   public static LoggedTunableNumber armTroughAngle =
-      new LoggedTunableNumber("Arm/TroughAngle", 61.0);
-  public static LoggedTunableNumber armL2Angle = new LoggedTunableNumber("Arm/L2Angle", 89.0);
+      new LoggedTunableNumber("Arm/TroughAngle", .81); // 61.0 degrees
+  public static LoggedTunableNumber armL2Angle =
+      new LoggedTunableNumber("Arm/L2Angle", Math.PI / 2.0); // 89.0 degrees]
+  public static LoggedTunableNumber armFloorAngle = new LoggedTunableNumber("Arm/FloorAngle", 0.0);
   // Define Arm position limits
-  public static Double armFrontLimit = 0.422;
-  public static Double armRearLimit = 0.05;
+  public static Double armFrontLimit = Math.PI / 2;
+  public static Double armRearLimit = 0.0;
 
   // Define Arm velocity limit
   public static Double armVelocityLimit = 0.8;
 
   // Define Arm PID constants
-  public static final LoggedTunableNumber armkP = new LoggedTunableNumber("Arm/kP", 17.5);
+  public static final LoggedTunableNumber armkP = new LoggedTunableNumber("Arm/kP", 6.0);
   public static final LoggedTunableNumber armkI = new LoggedTunableNumber("Arm/kI", 0.0);
-  public static final LoggedTunableNumber armkD = new LoggedTunableNumber("Arm/kD", 0.8);
+  public static final LoggedTunableNumber armkD = new LoggedTunableNumber("Arm/kD", 0.0);
 
   // Define Arm Speeds
   public static final LoggedTunableNumber armIntakeSpeed =
-      new LoggedTunableNumber("Arm/IntakeSpeed", -.5);
+      new LoggedTunableNumber("Arm/IntakeSpeed", -.2);
   public static final LoggedTunableNumber armScoringSpeed =
       new LoggedTunableNumber("Arm/ScoringSpeed", .5);
   public static final LoggedTunableNumber armUpSpeed = new LoggedTunableNumber("Arm/UpSpeed", .75);
@@ -35,4 +37,6 @@ public class ArmConstants {
       new LoggedTunableNumber("Arm/DownSpeed", -.75);
   public static final LoggedTunableNumber armBrakeSpeedTheta =
       new LoggedTunableNumber("Arm/BrakeSpeed", 0.0);
+  public static final LoggedTunableNumber armAngleOffset =
+      new LoggedTunableNumber("Arm/Offset", 0.638);
 }

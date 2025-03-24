@@ -7,6 +7,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.function.DoubleSupplier;
 
 public class NewIntake extends SubsystemBase {
 
@@ -32,12 +33,12 @@ public class NewIntake extends SubsystemBase {
         PersistMode.kPersistParameters);
   }
 
-  public Command forwardIntake(Double velocity) {
+  public Command forwardIntake(DoubleSupplier velocity) {
     // Inline construction of command goes here.
     return run(
         () -> {
-          intakeMotor1.set(velocity);
-          intakeMotor2.set(velocity);
+          intakeMotor1.set(velocity.getAsDouble());
+          intakeMotor2.set(velocity.getAsDouble());
         });
   }
 

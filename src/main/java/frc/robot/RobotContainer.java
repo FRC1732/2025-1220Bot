@@ -172,7 +172,7 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
-    NamedCommands.registerCommand("scoreCoral", newIntake.forwardIntake(1.0));
+    NamedCommands.registerCommand("scoreCoral", newIntake.forwardIntake(() -> 1.0));
 
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
@@ -245,12 +245,12 @@ public class RobotContainer {
     // coral scoring
     oi.getCoralScoreTrigger()
         // whileTrue(new PrintCommand("Trigger has been pressed."))
-        .whileTrue(newIntake.forwardIntake(ArmConstants.armScoringSpeed.get()))
-        .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
+        .whileTrue(newIntake.forwardIntake(ArmConstants.armScoringSpeed::get))
+        .whileFalse(newIntake.forwardIntake(() -> 0.0).withName("coral stopping"));
     oi.getCoralReverseTrigger()
         .whileTrue(
-            newIntake.forwardIntake(ArmConstants.armIntakeSpeed.get()).withName("coral reverse"))
-        .whileFalse(newIntake.forwardIntake(0.0).withName("coral stopping"));
+            newIntake.forwardIntake(ArmConstants.armIntakeSpeed::get).withName("coral reverse"))
+        .whileFalse(newIntake.forwardIntake(() -> 0.0).withName("coral stopping"));
     oi.getUpArmTrigger()
         .whileTrue(arm.upArm(ArmConstants.armUpSpeed.get()))
         .whileFalse(arm.breakArm());

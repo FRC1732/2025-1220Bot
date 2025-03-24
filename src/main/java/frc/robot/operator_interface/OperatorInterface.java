@@ -91,10 +91,6 @@ public interface OperatorInterface {
     return new Trigger(() -> false);
   }
 
-  public default Trigger getClimbingTrigger() {
-    return new Trigger(() -> false);
-  }
-
   public default Trigger getMoveToTroughTrigger() {
     return new Trigger(() -> false);
   }
@@ -107,6 +103,18 @@ public interface OperatorInterface {
 
   // miscellaneous
   public default Trigger getInterruptAll() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger goToStartClimbPosition() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger goToRetractClimbPosition() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger getClimbingTrigger() {
     return new Trigger(() -> false);
   }
 }
