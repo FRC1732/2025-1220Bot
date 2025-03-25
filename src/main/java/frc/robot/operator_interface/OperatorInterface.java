@@ -114,7 +114,7 @@ public interface OperatorInterface {
     return new Trigger(() -> false);
   }
 
-  public default Trigger getClimbingTrigger() {
+  public default Trigger engageClimberWindmill() {
     return new Trigger(() -> false);
   }
 }

@@ -28,6 +28,7 @@ import frc.robot.operator_interface.OISelector;
 import frc.robot.operator_interface.OperatorInterface;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.ArmConstants;
+import frc.robot.subsystems.ArmPose;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.NewIntake;
 import java.util.Optional;
@@ -52,7 +53,8 @@ public class RobotContainer {
   public final Arm arm = new Arm();
 
   private double MaxSpeed =
-      TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 1.0; // kSpeedAt12Volts desired top speed
+      TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 1.0; // kSpeedAt12Volts desired top
+  // speed
   private double MaxAngularRate =
       RotationsPerSecond.of(.5)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -251,20 +253,18 @@ public class RobotContainer {
         .whileTrue(
             newIntake.forwardIntake(ArmConstants.armIntakeSpeed::get).withName("coral reverse"))
         .whileFalse(newIntake.forwardIntake(() -> 0.0).withName("coral stopping"));
-    oi.getUpArmTrigger()
-        .whileTrue(arm.upArm(ArmConstants.armUpSpeed.get()))
-        .whileFalse(arm.breakArm());
-    oi.getDownArmTrigger()
-        .whileTrue(arm.upArm(ArmConstants.armDownSpeed.get()))
-        .whileFalse(arm.breakArm());
+    oi.getUpArmTrigger().whileTrue(arm.upArm(ArmConstants.armUpSpeed.get()));
+    oi.getDownArmTrigger().whileTrue(arm.upArm(ArmConstants.armDownSpeed.get()));
     oi.getMoveToTroughTrigger()
-        .whileTrue(arm.goToSetPoint(ArmConstants.armTroughAngle.get()))
-        .whileFalse(arm.breakArm());
-    oi.getMoveToL2Trigger()
-        .whileTrue(arm.goToSetPoint(ArmConstants.armL2Angle.get()))
-        .whileFalse(arm.breakArm());
+        .whileTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
+    oi.getMoveToL2Trigger().whileTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.ALGAE_L2)));
 
-    oi.getClimbingTrigger().onTrue(arm.turnClimbMotor());
+    // Climbing
+    oi.engageClimberWindmill().onTrue(arm.turnClimbMotor());
+    oi.goToStartClimbPosition().onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.CLIMBING)));
+    oi.goToRetractClimbPosition()
+        .whileTrue(new InstantCommand(() -> arm.enableClimb(true)))
+        .onFalse(new InstantCommand(() -> arm.enableClimb(false)));
   }
 
   private void configureVisionCommands() {

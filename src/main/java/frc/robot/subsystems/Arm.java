@@ -1,23 +1,33 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.*;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.Map;
 
 public class Arm extends SubsystemBase {
-  SparkMax armMotor1, armMotor2, climbMotor;
-  SparkMaxConfig armMotor1Config, armMotor2Config, climbMotorConfig;
-  DutyCycleEncoder encoder;
-  PIDController armP;
-  Double armFrontLimit, armRearLimit, armVelocityLimit;
-  boolean isInDefaultPosition;
+  private SparkMax armMotor1, armMotor2, climbMotor;
+  private SparkMaxConfig armMotor1Config, armMotor2Config, climbMotorConfig;
+
+  private PIDController armP;
+  private boolean isInDefaultPosition;
+
+  private AbsoluteEncoder armAbsoluteEncoder;
+
+  private Map<ArmPose, Double> armPoseMap;
+
+  private boolean isClimbing = false;
 
   /** Creates a new Arm. */
   public Arm() {
@@ -46,28 +56,45 @@ public class Arm extends SubsystemBase {
         ResetMode.kNoResetSafeParameters, // TODO: add reset params
         PersistMode.kPersistParameters);
 
-    encoder = new DutyCycleEncoder(0);
+    armAbsoluteEncoder = armMotor1.getAbsoluteEncoder();
     armP =
         new PIDController(
             ArmConstants.armkP.get(), ArmConstants.armkI.get(), ArmConstants.armkD.get());
+
+    armPoseMap =
+        Map.of(
+            ArmPose.STARTING, ArmConstants.armStartingAngleDegrees,
+            ArmPose.FLORAL, ArmConstants.armFloorAngleDegrees,
+            ArmPose.ALGAE_L2, ArmConstants.armL2AngleDegrees,
+            ArmPose.CLIMBING, ArmConstants.armClimbingDegrees,
+            ArmPose.SCORE_CORAL, ArmConstants.armL1CoralAngleDegrees);
+
+    setupShuffleboard();
+  }
+
+  private void setupShuffleboard() {
+    ShuffleboardTab armTab = Shuffleboard.getTab("Arm");
+    armTab.add(armP);
+    armTab.addDouble("Arm Position", this::getPosition);
+    armTab.addDouble("Absolute Arm Position", armAbsoluteEncoder::getPosition);
+    armTab.addDouble("Setpoint", armP::getSetpoint);
   }
 
   public Command upArm(Double velocity) {
     return run(
         () -> {
           armMotor1.set(velocity);
-          armMotor2.set(velocity);
         });
   }
 
-  public Command breakArm() {
+  @Deprecated
+  private Command breakArm() {
     double dTheta =
         Math.sin(armMotor1.getAbsoluteEncoder().getPosition() * 2 * Math.PI)
             * ArmConstants.armBrakeSpeedTheta.get();
     return run(
         () -> {
           armMotor1.set(dTheta);
-          armMotor2.set(dTheta);
         });
   }
 
@@ -75,17 +102,11 @@ public class Arm extends SubsystemBase {
     return run(
         () -> {
           armMotor1.set(-velocity);
-          armMotor2.set(-velocity);
         });
   }
 
-  public Command goToSetPoint(double setPoint) {
-    return run(
-        () -> {
-          double output = armP.calculate(encoder.get(), setPoint);
-          armMotor1.set(output);
-          armMotor2.set(output);
-        });
+  public void setArmPose(ArmPose pose) {
+    armP.setSetpoint(armPoseMap.get(pose));
   }
 
   double CLIMB_TURNING_TIME = 1.0;
@@ -102,26 +123,6 @@ public class Arm extends SubsystemBase {
         .onlyWhile(() -> a.get() < CLIMB_TURNING_TIME);
   }
 
-  // public Command moveArmToPosition(Double position) {
-  //   return run(
-  //       () -> {
-
-  //         // Get the target position, clamped to (limited between) the lowest and highest arm
-  //         // positions
-  //         Double target =
-  //             MathUtil.clamp(position, ArmConstants.armRearLimit, ArmConstants.armFrontLimit);
-
-  //         // Calculate the PID result, and clamp to the arm's maximum velocity limit.
-  //         Double result =
-  //             MathUtil.clamp(
-  //                 armP.calculate(encoder.get(), target),
-  //                 -1 * ArmConstants.armVelocityLimit,
-  //                 ArmConstants.armVelocityLimit);
-
-  //         armMotor1.set(result);
-  //       });
-  // }
-
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
@@ -129,11 +130,32 @@ public class Arm extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    if (DriverStation.isDisabled()) {
+      // armP.reset(getPosition());
+    }
+
+    if (isClimbing) {
+      if (getPosition() > ArmConstants.lowClimbAngleDegrees) {
+        armMotor1.set(ArmConstants.climbSpeed);
+      } else {
+        isClimbing = false;
+        armP.setSetpoint(ArmConstants.lowClimbAngleDegrees);
+        armMotor1.set(MathUtil.clamp(armP.calculate(getPosition()), -0.5, 0.5));
+      }
+    } else {
+      armMotor1.set(MathUtil.clamp(armP.calculate(getPosition()), -0.5, 0.5));
+    }
+
+    doLogging();
   }
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+  private void doLogging() {}
+
+  private double getPosition() {
+    return MathUtil.inputModulus((armAbsoluteEncoder.getPosition() - 0.64) * 360.0, 0, 360);
+  }
+
+  public void enableClimb(boolean isClimbing) {
+    this.isClimbing = isClimbing;
   }
 }

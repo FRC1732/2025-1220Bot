@@ -45,7 +45,7 @@ public class FullOperatorConsoleOI extends DualJoysticksOI {
   }
 
   @Override
-  public Trigger getClimbingTrigger() {
+  public Trigger engageClimberWindmill() {
     return operatorPanelButtons[1];
   }
 }
