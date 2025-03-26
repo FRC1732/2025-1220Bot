@@ -99,6 +99,10 @@ public interface OperatorInterface {
     return new Trigger(() -> false);
   }
 
+  public default Trigger getMoveToFloorPickupTrigger() {
+    return new Trigger(() -> false);
+  }
+
   // drivetrain, game-specific
 
   // miscellaneous
@@ -115,6 +119,10 @@ public interface OperatorInterface {
   }
 
   public default Trigger engageClimberWindmill() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger pluckAglaeTrigger() {
     return new Trigger(() -> false);
   }
 }

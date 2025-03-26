@@ -5,40 +5,48 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.DoubleSupplier;
 
 public class NewIntake extends SubsystemBase {
 
-  SparkMax intakeMotor1, intakeMotor2;
+  SparkMax topIntakeMotor, bottomIntakeMotor;
   SparkMaxConfig intakeMotor1Config, intakeMotor2Config;
 
   /** Creates a new Intake. */
   public NewIntake() {
-    intakeMotor1 = new SparkMax(51, MotorType.kBrushed);
-    intakeMotor2 = new SparkMax(53, MotorType.kBrushed);
+    topIntakeMotor = new SparkMax(51, MotorType.kBrushed);
+    bottomIntakeMotor = new SparkMax(53, MotorType.kBrushed);
 
     intakeMotor1Config = new SparkMaxConfig();
     intakeMotor2Config = new SparkMaxConfig();
 
-    intakeMotor1.configure(
+    topIntakeMotor.configure(
         intakeMotor1Config.inverted(false).idleMode(IdleMode.kBrake),
         ResetMode.kNoResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    intakeMotor2.configure(
+    bottomIntakeMotor.configure(
         intakeMotor2Config.inverted(false).idleMode(IdleMode.kBrake),
         ResetMode.kNoResetSafeParameters,
         PersistMode.kPersistParameters);
+
+    setupShuffleboard();
+  }
+
+  private void setupShuffleboard() {
+    ShuffleboardTab tab = Shuffleboard.getTab("Intake");
   }
 
   public Command forwardIntake(DoubleSupplier velocity) {
     // Inline construction of command goes here.
     return run(
         () -> {
-          intakeMotor1.set(velocity.getAsDouble());
-          intakeMotor2.set(velocity.getAsDouble());
+          topIntakeMotor.set(velocity.getAsDouble());
+          bottomIntakeMotor.set(velocity.getAsDouble());
         });
   }
 
@@ -46,8 +54,20 @@ public class NewIntake extends SubsystemBase {
     // Inline construction of command goes here.
     return run(
         () -> {
-          intakeMotor1.set(-velocity);
-          intakeMotor2.set(-velocity);
+          topIntakeMotor.set(-velocity);
+          bottomIntakeMotor.set(-velocity);
+        });
+  }
+
+  public Command pluckAlgae() {
+    return run(() -> topIntakeMotor.set(-0.2)).withTimeout(1.0);
+  }
+
+  public Command stop() {
+    return runOnce(
+        () -> {
+          topIntakeMotor.set(0);
+          bottomIntakeMotor.set(0);
         });
   }
 
@@ -59,10 +79,5 @@ public class NewIntake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
   }
 }

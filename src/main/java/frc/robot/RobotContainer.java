@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.lib.team3061.RobotConfig;
 import frc.robot.configs.CompRobotConfig;
 import frc.robot.generated.TunerConstants;
@@ -29,6 +31,7 @@ import frc.robot.operator_interface.OperatorInterface;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.ArmConstants;
 import frc.robot.subsystems.ArmPose;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.NewIntake;
 import java.util.Optional;
@@ -51,6 +54,7 @@ public class RobotContainer {
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
   public final NewIntake newIntake = new NewIntake();
   public final Arm arm = new Arm();
+  public final Climber climber = new Climber();
 
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 1.0; // kSpeedAt12Volts desired top
@@ -253,14 +257,29 @@ public class RobotContainer {
         .whileTrue(
             newIntake.forwardIntake(ArmConstants.armIntakeSpeed::get).withName("coral reverse"))
         .whileFalse(newIntake.forwardIntake(() -> 0.0).withName("coral stopping"));
-    oi.getUpArmTrigger().whileTrue(arm.upArm(ArmConstants.armUpSpeed.get()));
-    oi.getDownArmTrigger().whileTrue(arm.upArm(ArmConstants.armDownSpeed.get()));
+    // oi.getUpArmTrigger().whileTrue(arm.upArm(ArmConstants.armUpSpeed.get()));
+    // oi.getDownArmTrigger().whileTrue(arm.upArm(ArmConstants.armDownSpeed.get()));
+
     oi.getMoveToTroughTrigger()
-        .whileTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
-    oi.getMoveToL2Trigger().whileTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.ALGAE_L2)));
+        .onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
+    oi.getMoveToL2Trigger().onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.ALGAE_L2)));
+    oi.getMoveToFloorPickupTrigger()
+        .onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.FLORAL)));
+
+    oi.pluckAglaeTrigger()
+        .whileTrue(
+            Commands.sequence(
+                new InstantCommand(() -> arm.setArmPose(ArmPose.ALGAE_L2)),
+                new WaitUntilCommand(() -> arm.isAtGoal()),
+                newIntake.pluckAlgae(),
+                newIntake.stop(),
+                new InstantCommand(() -> arm.setArmPose(ArmPose.COMPLETE_ALGAE_PLUCK)),
+                new WaitUntilCommand(() -> arm.isAtGoal()),
+                new WaitCommand(1),
+                new InstantCommand(() -> arm.setArmPose(ArmPose.CARRY_ALGAE))));
 
     // Climbing
-    oi.engageClimberWindmill().onTrue(arm.turnClimbMotor());
+    oi.engageClimberWindmill().whileTrue(climber.runOnce(() -> climber.engageWindmill()));
     oi.goToStartClimbPosition().onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.CLIMBING)));
     oi.goToRetractClimbPosition()
         .whileTrue(new InstantCommand(() -> arm.enableClimb(true)))

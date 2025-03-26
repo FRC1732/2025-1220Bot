@@ -91,23 +91,33 @@ public class DualJoysticksOI implements OperatorInterface {
     return translateJoystickButtons[1];
   }
 
-  @Override
-  public Trigger getUpArmTrigger() {
-    return translateJoystickButtons[2];
-  }
+  // @Override
+  // public Trigger getUpArmTrigger() {
+  //   return translateJoystickButtons[2];
+  // }
+
+  // @Override
+  // public Trigger getDownArmTrigger() {
+  //   return rotateJoystickButtons[2];
+  // }
 
   @Override
-  public Trigger getDownArmTrigger() {
+  public Trigger getMoveToFloorPickupTrigger() {
     return rotateJoystickButtons[2];
   }
 
   @Override
   public Trigger getMoveToTroughTrigger() {
-    return rotateJoystickButtons[3];
+    return translateJoystickButtons[2];
   }
 
   @Override
   public Trigger getMoveToL2Trigger() {
     return rotateJoystickButtons[5];
+  }
+
+  @Override
+  public Trigger pluckAglaeTrigger() {
+    return rotateJoystickButtons[3];
   }
 }

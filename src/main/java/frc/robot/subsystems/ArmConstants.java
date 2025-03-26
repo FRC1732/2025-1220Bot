@@ -12,11 +12,13 @@ public class ArmConstants {
   public static Double positionRemoveAlgaeHigh = 0.1;
 
   public static final double armStartingAngleDegrees = 74.0;
-  public static final double armL1CoralAngleDegrees = 61.0;
-  public static final double armL2AngleDegrees = 89.0;
+  public static final double armL1CoralAngleDegrees = 48.0;
+  public static final double armL2AlgaePluckDegrees = 58.0;
   public static final double armFloorAngleDegrees = 0.7;
-  public static final double armClimbingDegrees = 55.0;
+  public static final double armClimbingDegrees = 63.0;
   public static final double lowClimbAngleDegrees = 20.0;
+  public static final double armAglaeCompletePluck = 83.0;
+  public static final double armAglaeCarry = 35.0;
 
   // Define Arm position limits
   public static Double armFrontLimitRadians = Math.PI / 2;
@@ -44,4 +46,5 @@ public class ArmConstants {
       new LoggedTunableNumber("Arm/Offset", 0.638);
 
   public static final double climbSpeed = -0.25;
+  public static final String SUBSYSTEM_NAME = "Arm/";
 }
