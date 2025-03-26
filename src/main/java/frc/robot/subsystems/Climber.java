@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.EncoderConfig;
@@ -13,6 +15,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 
 public class Climber extends SubsystemBase {
   private SparkMax windmillMotor;
@@ -24,12 +27,10 @@ public class Climber extends SubsystemBase {
   public static final double RETREAT_TO_SAFE_BOUNDS_TIME = 0.2;
   public static final Double WINDMILL_SPEED = 0.2;
 
-  public static final double WINDMILL_DEGREES_PER_ROTATION =
-      90.0; // degrees per motor revolution (360 / reduction =
-  // 360 / 4)
-  public static final double WINDMILL_RPM_TO_DEGREES_PER_SECOND =
-      1.5; // RPM to deg/sec (360 / reduction / 60 = 360 / 4
-  // / 60)
+  public static final double WINDMILL_DEGREES_PER_ROTATION = 90.0;
+  // degrees per motor revolution (360 / reduction = 360 / 4)
+  public static final double WINDMILL_RPM_TO_DEGREES_PER_SECOND = 1.5;
+  // RPM to deg/sec (360 / reduction / 60 = 360 / 4 / 60)
 
   public static final String SUBSYSTEM_NAME = "Climber";
 
@@ -38,19 +39,24 @@ public class Climber extends SubsystemBase {
     windmillMotor = new SparkMax(62, MotorType.kBrushless);
 
     SparkMaxConfig windmillConfig = new SparkMaxConfig();
-
     windmillConfig.inverted(true);
-
     windmillConfig.idleMode(IdleMode.kBrake);
 
     EncoderConfig windmillEncoderConfig = new EncoderConfig();
     windmillEncoderConfig.positionConversionFactor(WINDMILL_DEGREES_PER_ROTATION);
     windmillEncoderConfig.velocityConversionFactor(WINDMILL_RPM_TO_DEGREES_PER_SECOND);
+
     windmillConfig.apply(windmillEncoderConfig);
+    windmillMotor.configure(
+        windmillConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
     windmillRelativeEncoder = windmillMotor.getEncoder();
+    windmillRelativeEncoder.setPosition(0);
+    windmillMotor.stopMotor();
 
     windmillEngaged = false;
+
+    setupShuffleboard();
   }
 
   public double getWindmillPosition() {
@@ -83,10 +89,18 @@ public class Climber extends SubsystemBase {
     } else {
       stopWindmill();
     }
+
+    doLogging();
   }
 
-  public void setupShuffleboard() {
+  private void doLogging() {
+    Logger.recordOutput(SUBSYSTEM_NAME + "/Windmill Engaged", windmillEngaged);
+    Logger.recordOutput(SUBSYSTEM_NAME + "/Windmill Position", getWindmillPosition());
+  }
+
+  private void setupShuffleboard() {
     ShuffleboardTab tab = Shuffleboard.getTab(SUBSYSTEM_NAME);
-    tab.addDouble("windmill position", this::getWindmillPosition);
+    tab.addDouble("windmill Position", this::getWindmillPosition);
+    tab.addBoolean("Windmill Engaged", () -> windmillEngaged);
   }
 }
