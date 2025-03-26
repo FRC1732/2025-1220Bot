@@ -30,11 +30,6 @@ public class FullOperatorConsoleOI extends DualJoysticksOI {
 
   // Operator Panel
   @Override
-  public Trigger getVisionIsEnabledSwitch() {
-    return operatorPanelButtons[10];
-  }
-
-  @Override
   public Trigger goToStartClimbPosition() {
     return operatorPanelButtons[2];
   }

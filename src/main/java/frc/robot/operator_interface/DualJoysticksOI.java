@@ -60,25 +60,10 @@ public class DualJoysticksOI implements OperatorInterface {
     return translateJoystickButtons[8];
   }
 
-  @Override
-  public Trigger getLock180Button() {
-    return new Trigger(() -> false);
-  }
 
   @Override
   public Trigger getXStanceButton() {
     return rotateJoystickButtons[4];
-  }
-
-  @Override
-  public Trigger getVisionIsEnabledSwitch() {
-    // vision is always enabled with dual joysticks as there is no switch to disable
-    return new Trigger(() -> true);
-  }
-
-  @Override
-  public Trigger getResetPoseToVisionButton() {
-    return translateJoystickButtons[10];
   }
 
   @Override

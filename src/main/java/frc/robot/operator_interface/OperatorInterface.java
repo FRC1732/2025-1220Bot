@@ -35,45 +35,30 @@ public interface OperatorInterface {
     return new Trigger(() -> false);
   }
 
-  public default Trigger getResetPoseToVisionButton() {
-    return new Trigger(() -> false);
-  }
+  // public default Trigger getResetPoseToVisionButton() {
+  //   return new Trigger(() -> false);
+  // }
 
   public default Trigger getXStanceButton() {
     return new Trigger(() -> false);
   }
 
-  public default Trigger getTranslationSlowModeButton() {
-    return new Trigger(() -> false);
-  }
+  // public default Trigger getTranslationSlowModeButton() {
+  //   return new Trigger(() -> false);
+  // }
 
-  public default Trigger getRotationSlowModeButton() {
-    return new Trigger(() -> false);
-  }
+  // public default Trigger getRotationSlowModeButton() {
+  //   return new Trigger(() -> false);
+  // }
 
-  public default Trigger getLock180Button() {
-    return new Trigger(() -> false);
-  }
+  // public default Trigger getLock180Button() {
+  //   return new Trigger(() -> false);
+  // }
 
-  public default Trigger getVisionIsEnabledSwitch() {
-    return new Trigger(() -> false);
-  }
+  // public default Trigger getVisionIsEnabledSwitch() {
+  //   return new Trigger(() -> false);
+  // }
 
-  public default Trigger getSysIdDynamicForward() {
-    return new Trigger(() -> false);
-  }
-
-  public default Trigger getSysIdDynamicReverse() {
-    return new Trigger(() -> false);
-  }
-
-  public default Trigger getSysIdQuasistaticForward() {
-    return new Trigger(() -> false);
-  }
-
-  public default Trigger getSysIdQuasistaticReverse() {
-    return new Trigger(() -> false);
-  }
 
   public default Trigger getCoralScoreTrigger() {
     return new Trigger(() -> false);
@@ -102,6 +87,10 @@ public interface OperatorInterface {
   public default Trigger getMoveToFloorPickupTrigger() {
     return new Trigger(() -> false);
   }
+  
+  public default Trigger carryAlgaeTrigger() {
+    return new Trigger(() -> false);
+  }
 
   // drivetrain, game-specific
 
@@ -123,6 +112,18 @@ public interface OperatorInterface {
   }
 
   public default Trigger pluckAglaeTrigger() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger operatorScoreTrigger() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger operatorIntakeTrigger() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger operatorCarryAlgaeTrigger() {
     return new Trigger(() -> false);
   }
 }
