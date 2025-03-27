@@ -58,7 +58,7 @@ public class FullOperatorConsoleOI extends DualJoysticksOI {
 
   @Override
   public Trigger operatorCarryAlgaeTrigger() {
-    return operatorPanelPOV[6]; // Down
+    return operatorPanelPOV[6]; // Left
   }
 
   @Override
