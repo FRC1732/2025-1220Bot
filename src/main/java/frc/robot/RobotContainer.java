@@ -11,6 +11,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -177,7 +178,7 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
-    NamedCommands.registerCommand("scoreCoral", newIntake.forwardIntake(() -> 1.0));
+    NamedCommands.registerCommand("scoreCoral", new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
 
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
@@ -187,6 +188,9 @@ public class RobotContainer {
 
     // add commands to the auto chooser
     autoChooser.addDefaultOption("Do Nothing", new InstantCommand());
+
+    Command getLeavePointsLeftRed = new PathPlannerAuto("Leave Left");
+    autoChooser.addOption("Leave Left", getLeavePointsLeftRed);
   }
 
   private void configureDrivetrainCommands() {
