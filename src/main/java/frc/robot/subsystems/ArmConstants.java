@@ -19,6 +19,7 @@ public class ArmConstants {
   public static final double lowClimbAngleDegrees = 20.0;
   public static final double armAglaeCompletePluck = 83.0;
   public static final double armAglaeCarry = 35.0;
+  public static final double armAglaeFloorPickup = 33.0;
 
   // Define Arm position limits
   public static Double armFrontLimitRadians = Math.PI / 2;

@@ -25,7 +25,7 @@ public class Climber extends SubsystemBase {
   public static final double WINDMILL_TOLERANCE = 3.0;
   public static final double WINDMILL_FULLY_ENGAGED_SETPOINT = 90.0;
   public static final double RETREAT_TO_SAFE_BOUNDS_TIME = 0.2;
-  public static final Double WINDMILL_SPEED = 0.2;
+  public static final Double WINDMILL_SPEED = 1.0;
 
   public static final double WINDMILL_DEGREES_PER_ROTATION = 90.0;
   // degrees per motor revolution (360 / reduction = 360 / 4)
@@ -64,6 +64,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void runWindmill() {
+    // System.out.println("Running windmill");
     windmillMotor.set(WINDMILL_SPEED);
   }
 
@@ -72,11 +73,17 @@ public class Climber extends SubsystemBase {
   }
 
   public void stopWindmill() {
+    // System.out.println("Stopping windmill");
     windmillMotor.stopMotor();
   }
 
   public void engageWindmill() {
+    // System.out.println("Engaging windmill");
     windmillEngaged = true;
+  }
+
+  public void toggleWindmill() {
+    windmillEngaged = !windmillEngaged;
   }
 
   @Override
@@ -96,11 +103,13 @@ public class Climber extends SubsystemBase {
   private void doLogging() {
     Logger.recordOutput(SUBSYSTEM_NAME + "/Windmill Engaged", windmillEngaged);
     Logger.recordOutput(SUBSYSTEM_NAME + "/Windmill Position", getWindmillPosition());
+    Logger.recordOutput(SUBSYSTEM_NAME + "/Windmill Speed", windmillMotor.get());
   }
 
   private void setupShuffleboard() {
     ShuffleboardTab tab = Shuffleboard.getTab(SUBSYSTEM_NAME);
     tab.addDouble("windmill Position", this::getWindmillPosition);
     tab.addBoolean("Windmill Engaged", () -> windmillEngaged);
+    tab.addDouble("Windmill Speed", windmillMotor::get);
   }
 }

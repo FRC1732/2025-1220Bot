@@ -60,7 +60,6 @@ public class DualJoysticksOI implements OperatorInterface {
     return translateJoystickButtons[8];
   }
 
-
   @Override
   public Trigger getXStanceButton() {
     return rotateJoystickButtons[4];

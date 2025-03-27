@@ -71,7 +71,8 @@ public class Arm extends SubsystemBase {
             ArmPose.CLIMBING, ArmConstants.armClimbingDegrees,
             ArmPose.SCORE_CORAL, ArmConstants.armL1CoralAngleDegrees,
             ArmPose.COMPLETE_ALGAE_PLUCK, ArmConstants.armAglaeCompletePluck,
-            ArmPose.CARRY_ALGAE, ArmConstants.armAglaeCarry);
+            ArmPose.CARRY_ALGAE, ArmConstants.armAglaeCarry,
+            ArmPose.ALGAE_FLOOR_PICKUP, ArmConstants.armAglaeFloorPickup);
 
     armP.setSetpoint(ArmConstants.armStartingAngleDegrees);
 

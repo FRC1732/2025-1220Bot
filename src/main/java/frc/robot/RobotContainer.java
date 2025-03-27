@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.lib.team3061.RobotConfig;
 import frc.robot.configs.CompRobotConfig;
@@ -38,20 +37,16 @@ import java.util.Optional;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   @SuppressWarnings("unused")
   private RobotConfig config;
 
-  private OperatorInterface oi = new OperatorInterface() {
-  };
+  private OperatorInterface oi = new OperatorInterface() {};
 
   private Alliance lastAlliance = Field2d.getInstance().getAlliance();
 
@@ -60,26 +55,29 @@ public class RobotContainer {
   public final Arm arm = new Arm();
   public final Climber climber = new Climber();
 
-  private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 1.0; // kSpeedAt12Volts desired top
+  private double MaxSpeed =
+      TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 1.0; // kSpeedAt12Volts desired top
   // speed
-  private double MaxAngularRate = RotationsPerSecond.of(.5)
-      .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+  private double MaxAngularRate =
+      RotationsPerSecond.of(1.0)
+          .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
-  private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(MaxSpeed * 0.03)
-      .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-      .withDriveRequestType(
-          DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+  private final SwerveRequest.FieldCentric drive =
+      new SwerveRequest.FieldCentric()
+          .withDeadband(MaxSpeed * 0.03)
+          .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+          .withDriveRequestType(
+              DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
   // use AdvantageKit's LoggedDashboardChooser instead of SendableChooser to
   // ensure accurate logging
-  private final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Routine");
+  private final LoggedDashboardChooser<Command> autoChooser =
+      new LoggedDashboardChooser<>("Auto Routine");
 
   /**
-   * Create the container for the robot. Contains subsystems, operator interface
-   * (OI) devices, and
+   * Create the container for the robot. Contains subsystems, operator interface (OI) devices, and
    * commands.
    */
   public RobotContainer() {
@@ -110,8 +108,7 @@ public class RobotContainer {
   }
 
   /**
-   * The RobotConfig subclass object *must* be created before any other objects
-   * that use it directly
+   * The RobotConfig subclass object *must* be created before any other objects that use it directly
    * or indirectly. If this isn't done, a null pointer exception will result.
    */
   private void createRobotConfig() {
@@ -129,8 +126,7 @@ public class RobotContainer {
   }
 
   /**
-   * Creates the field from the defined regions and transition points from one
-   * region to its
+   * Creates the field from the defined regions and transition points from one region to its
    * neighbor. The field is used to generate paths.
    */
   private void constructField() {
@@ -138,10 +134,8 @@ public class RobotContainer {
   }
 
   /**
-   * This method scans for any changes to the connected operator interface (e.g.,
-   * joysticks). If
-   * anything changed, it creates a new OI object and binds all of the buttons to
-   * commands.
+   * This method scans for any changes to the connected operator interface (e.g., joysticks). If
+   * anything changed, it creates a new OI object and binds all of the buttons to commands.
    */
   public void updateOI() {
     OperatorInterface prevOI = oi;
@@ -211,15 +205,16 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
         drivetrain.applyRequest(
-            () -> drive
-                .withVelocityX(
-                    -oi.getTranslateX() * MaxSpeed) // Drive forward with negative Y (forward)
-                .withVelocityY(
-                    -oi.getTranslateY() * MaxSpeed) // Drive left with negative X (left)
-                .withRotationalRate(
-                    -oi.getRotate()
-                        * MaxAngularRate) // Drive counterclockwise with negative X (left)
-        ));
+            () ->
+                drive
+                    .withVelocityX(
+                        -oi.getTranslateX() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(
+                        -oi.getTranslateY() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(
+                        -oi.getRotate()
+                            * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            ));
 
     // slow-mode toggle
     /*
@@ -278,9 +273,21 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.FLORAL)));
 
     oi.carryAlgaeTrigger().onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.CARRY_ALGAE)));
-    oi.operatorCarryAlgaeTrigger().onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.CARRY_ALGAE)));
+    oi.operatorCarryAlgaeTrigger()
+        .onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.CARRY_ALGAE)));
+    oi.operatorFloorPickupTrigger()
+        .onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.ALGAE_FLOOR_PICKUP)));
 
     oi.pluckAglaeTrigger()
+        .whileTrue(
+            Commands.sequence(
+                new InstantCommand(() -> arm.setArmPose(ArmPose.ALGAE_L2)),
+                new WaitUntilCommand(() -> arm.isAtGoal()),
+                newIntake.pluckAlgae(),
+                newIntake.stop(),
+                new InstantCommand(() -> arm.setArmPose(ArmPose.COMPLETE_ALGAE_PLUCK))));
+
+    oi.operatorPluckAlgaeTrigger()
         .whileTrue(
             Commands.sequence(
                 new InstantCommand(() -> arm.setArmPose(ArmPose.ALGAE_L2)),
@@ -293,7 +300,7 @@ public class RobotContainer {
     // new InstantCommand(() -> arm.setArmPose(ArmPose.CARRY_ALGAE))));
 
     // Climbing
-    oi.engageClimberWindmill().whileTrue(climber.runOnce(() -> climber.engageWindmill()));
+    oi.engageClimberWindmill().whileTrue(climber.runOnce(() -> climber.toggleWindmill()));
     oi.goToStartClimbPosition().onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.CLIMBING)));
     oi.goToRetractClimbPosition()
         .whileTrue(new InstantCommand(() -> arm.enableClimb(true)))
@@ -315,8 +322,7 @@ public class RobotContainer {
   }
 
   /**
-   * Check if the alliance color has changed; if so, update the vision subsystem
-   * and Field2d
+   * Check if the alliance color has changed; if so, update the vision subsystem and Field2d
    * singleton.
    */
   public void checkAllianceColor() {

@@ -59,7 +59,6 @@ public interface OperatorInterface {
   //   return new Trigger(() -> false);
   // }
 
-
   public default Trigger getCoralScoreTrigger() {
     return new Trigger(() -> false);
   }
@@ -87,7 +86,7 @@ public interface OperatorInterface {
   public default Trigger getMoveToFloorPickupTrigger() {
     return new Trigger(() -> false);
   }
-  
+
   public default Trigger carryAlgaeTrigger() {
     return new Trigger(() -> false);
   }
@@ -124,6 +123,14 @@ public interface OperatorInterface {
   }
 
   public default Trigger operatorCarryAlgaeTrigger() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger operatorPluckAlgaeTrigger() {
+    return new Trigger(() -> false);
+  }
+
+  public default Trigger operatorFloorPickupTrigger() {
     return new Trigger(() -> false);
   }
 }
