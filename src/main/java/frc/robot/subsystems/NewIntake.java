@@ -50,6 +50,16 @@ public class NewIntake extends SubsystemBase {
         });
   }
 
+  public Command scoreForever(DoubleSupplier velocity) {
+    // Inline construction of command goes here.
+    return runOnce(
+        () -> {
+          System.out.println("Running forever:" + -velocity.getAsDouble());
+          topIntakeMotor.set(-velocity.getAsDouble());
+          bottomIntakeMotor.set(-velocity.getAsDouble());
+        });
+  }
+
   public Command reverseIntake(Double velocity) {
     // Inline construction of command goes here.
     return run(

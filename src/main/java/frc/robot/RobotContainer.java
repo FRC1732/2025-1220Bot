@@ -180,8 +180,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "setL1Pose", new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
     NamedCommands.registerCommand(
-        "scoreCoral",
-        new InstantCommand(() -> newIntake.forwardIntake(ArmConstants.armScoringSpeed::get)));
+        "scoreCoral", newIntake.scoreForever(ArmConstants.armScoringSpeed::get));
 
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
@@ -197,6 +196,9 @@ public class RobotContainer {
 
     Command getLeavePointsRightRed = new PathPlannerAuto("Leave Left", true);
     autoChooser.addOption("Leave Right", getLeavePointsRightRed);
+
+    Command getLeavePointsMiddle = new PathPlannerAuto("Leave Middle");
+    autoChooser.addOption("Leave Middle", getLeavePointsMiddle);
 
     Shuffleboard.getTab("MAIN").add(autoChooser.getSendableChooser());
   }
