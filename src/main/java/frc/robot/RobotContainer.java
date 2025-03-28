@@ -14,7 +14,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -35,7 +34,6 @@ import frc.robot.subsystems.ArmPose;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.NewIntake;
-import java.util.Optional;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -179,8 +177,11 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
-    NamedCommands.registerCommand("setL1Pose", new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
-    NamedCommands.registerCommand("scoreCoral", new InstantCommand(() -> newIntake.forwardIntake(ArmConstants.armScoringSpeed::get)));
+    NamedCommands.registerCommand(
+        "setL1Pose", new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
+    NamedCommands.registerCommand(
+        "scoreCoral",
+        new InstantCommand(() -> newIntake.forwardIntake(ArmConstants.armScoringSpeed::get)));
 
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
