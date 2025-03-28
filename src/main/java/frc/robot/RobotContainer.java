@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -178,7 +179,8 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
-    NamedCommands.registerCommand("scoreCoral", new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
+    NamedCommands.registerCommand("setL1Pose", new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
+    NamedCommands.registerCommand("scoreCoral", new InstantCommand(() -> newIntake.forwardIntake(ArmConstants.armScoringSpeed::get)));
 
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
@@ -191,6 +193,11 @@ public class RobotContainer {
 
     Command getLeavePointsLeftRed = new PathPlannerAuto("Leave Left");
     autoChooser.addOption("Leave Left", getLeavePointsLeftRed);
+
+    Command getLeavePointsRightRed = new PathPlannerAuto("Leave Left", true);
+    autoChooser.addOption("Leave Right", getLeavePointsRightRed);
+
+    Shuffleboard.getTab("MAIN").add(autoChooser.getSendableChooser());
   }
 
   private void configureDrivetrainCommands() {
@@ -330,11 +337,14 @@ public class RobotContainer {
    * singleton.
    */
   public void checkAllianceColor() {
-    Optional<Alliance> alliance = DriverStation.getAlliance();
+    lastAlliance = Alliance.Blue;
+    Field2d.getInstance().updateAlliance(this.lastAlliance);
+
+    /*Optional<Alliance> alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() != lastAlliance) {
       this.lastAlliance = alliance.get();
       Field2d.getInstance().updateAlliance(this.lastAlliance);
-    }
+    }*/
   }
 
   public void periodic() {
@@ -342,7 +352,7 @@ public class RobotContainer {
   }
 
   public void disablePeriodic() {
-    // empty for now
+    this.checkAllianceColor();
   }
 
   public void autonomousInit() {
