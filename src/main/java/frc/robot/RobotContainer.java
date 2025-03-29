@@ -181,6 +181,7 @@ public class RobotContainer {
         "setL1Pose", new InstantCommand(() -> arm.setArmPose(ArmPose.SCORE_CORAL)));
     NamedCommands.registerCommand(
         "scoreCoral", newIntake.scoreForever(ArmConstants.armScoringSpeed::get));
+    NamedCommands.registerCommand("stopScore", newIntake.scoreForever(() -> 0.0));
 
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
@@ -194,7 +195,7 @@ public class RobotContainer {
     Command getLeavePointsLeftRed = new PathPlannerAuto("Leave Left");
     autoChooser.addOption("Leave Left", getLeavePointsLeftRed);
 
-    Command getLeavePointsRightRed = new PathPlannerAuto("Leave Left", true);
+    Command getLeavePointsRightRed = new PathPlannerAuto("Leave Right");
     autoChooser.addOption("Leave Right", getLeavePointsRightRed);
 
     Command getLeavePointsMiddle = new PathPlannerAuto("Leave Middle");
@@ -314,7 +315,7 @@ public class RobotContainer {
     // new InstantCommand(() -> arm.setArmPose(ArmPose.CARRY_ALGAE))));
 
     // Climbing
-    oi.engageClimberWindmill().whileTrue(climber.runOnce(() -> climber.toggleWindmill()));
+    oi.engageClimberWindmill().whileTrue(climber.runOnce(climber::toggleWindmill));
     oi.goToStartClimbPosition().onTrue(new InstantCommand(() -> arm.setArmPose(ArmPose.CLIMBING)));
     oi.goToRetractClimbPosition()
         .whileTrue(new InstantCommand(() -> arm.enableClimb(true)))

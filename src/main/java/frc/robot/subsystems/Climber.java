@@ -15,6 +15,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.team6328.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
 public class Climber extends SubsystemBase {
@@ -25,7 +26,8 @@ public class Climber extends SubsystemBase {
   public static final double WINDMILL_TOLERANCE = 3.0;
   public static final double WINDMILL_FULLY_ENGAGED_SETPOINT = 90.0;
   public static final double RETREAT_TO_SAFE_BOUNDS_TIME = 0.2;
-  public static final Double WINDMILL_SPEED = 1.0;
+  public static final LoggedTunableNumber WINDMILL_SPEED =
+      new LoggedTunableNumber("windmill speed", .50);
 
   public static final double WINDMILL_DEGREES_PER_ROTATION = 90.0;
   // degrees per motor revolution (360 / reduction = 360 / 4)
@@ -65,11 +67,11 @@ public class Climber extends SubsystemBase {
 
   public void runWindmill() {
     // System.out.println("Running windmill");
-    windmillMotor.set(WINDMILL_SPEED);
+    windmillMotor.set(WINDMILL_SPEED.get());
   }
 
   public void reverseWindmill() {
-    windmillMotor.set(WINDMILL_SPEED * -1);
+    windmillMotor.set(-WINDMILL_SPEED.get());
   }
 
   public void stopWindmill() {
