@@ -14,7 +14,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -32,6 +31,7 @@ import frc.robot.operator_interface.OISelector;
 import frc.robot.operator_interface.OperatorInterface;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralScoring;
+import frc.robot.subsystems.VisionTracking;
 import java.util.Optional;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -51,6 +51,7 @@ public class RobotContainer {
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
   public final CoralScoring coralScoring = new CoralScoring();
+  public final VisionTracking visionTracking = new VisionTracking();
 
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -169,63 +170,44 @@ public class RobotContainer {
   /** Use this method to define your commands for autonomous mode. */
   private void configureAutoCommands() {
     // Event Markers
-   NamedCommands.registerCommand("scoreCoral", new AdvancedCoralScoring(coralScoring));
-   NamedCommands.registerCommand("autoScoring", new AutoAdvancedCoralScoring(coralScoring));
-   
+    NamedCommands.registerCommand("scoreCoral", new AdvancedCoralScoring(coralScoring));
+    NamedCommands.registerCommand("autoScoring", new AutoAdvancedCoralScoring(coralScoring));
+
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
     new EventTrigger("ZoneMarker").onFalse(Commands.print("left zone"));
-
 
     // build auto path commands
 
     // add commands to the auto chooser
     autoChooser.addDefaultOption("Do Nothing", new InstantCommand());
 
-    Command getLeavePointsLeftRed = new PathPlannerAuto("Leave Left Red");
-    autoChooser.addOption("Leave Left Red", getLeavePointsLeftRed);
+    Command score2CoralLeft = new PathPlannerAuto("Score 2 Coral Left");
+    autoChooser.addOption("Score 2 Coral Left", score2CoralLeft);
 
-    Command getLeavePointsRightRed = new PathPlannerAuto("Leave Right Red");
-    autoChooser.addOption("Leave Right Red", getLeavePointsRightRed);
+    Command score1CoralLeft = new PathPlannerAuto("Score 1 Coral Left");
+    autoChooser.addOption("Score 1 Coral Left", score1CoralLeft);
 
-    Command getLeavePointsRightBlue = new PathPlannerAuto("Leave Right Blue");
-    autoChooser.addOption("Leave Right Red", getLeavePointsRightBlue);
-   
-    Command getLeavePointsLeftBlue = new PathPlannerAuto("Leave Left Blue");
-    autoChooser.addOption("Leave Right Red", getLeavePointsLeftBlue);
+    Command leaveLeft = new PathPlannerAuto("Leave Left");
+    autoChooser.addOption("Leave Left", leaveLeft);
 
-    Command leaveMiddleRedAndGoRight = new PathPlannerAuto("Leave Middle Red and Go Right");
-    autoChooser.addOption("Leave Middle Red and Go Right", leaveMiddleRedAndGoRight);
+    Command score1CoralRight = new PathPlannerAuto("Score 1 Coral Right");
+    autoChooser.addOption("Score 1 Coral Right", score1CoralRight);
 
-    Command leaveMiddleRedAndGoLeft = new PathPlannerAuto("Leave Middle Red and Go Left");
-    autoChooser.addOption("Leave Middle Red and Go Left", leaveMiddleRedAndGoLeft);
-    
-    Command leaveMiddleBlueAndGoLeft = new PathPlannerAuto("Leave Middle Blue and Go Left");
-    autoChooser.addOption("Leave Middle Blue and Go Left", leaveMiddleBlueAndGoLeft);
+    Command leaveMiddleAndGoLeft = new PathPlannerAuto("Leave Middle And Go Left");
+    autoChooser.addOption("Leave Middle And Go Left", leaveMiddleAndGoLeft);
 
-    Command leaveMiddleBlueAndGoRight = new PathPlannerAuto("Leave Middle Blue and Go Right");
-    autoChooser.addOption("Leave Middle Blue and Go Right", leaveMiddleBlueAndGoRight);
+    Command leaveMiddleAndGoRight = new PathPlannerAuto("Leave Middle And Go Right");
+    autoChooser.addOption("Leave Middle And Go Right", leaveMiddleAndGoRight);
 
-    Command score1CoralLeftBlue = new PathPlannerAuto("Score 1 Coral Left Blue");
-    autoChooser.addOption("Score 1 Coral Left Blue", score1CoralLeftBlue);
+    Command score2CoralRight = new PathPlannerAuto("Score 2 Coral Right");
+    autoChooser.addOption("Score 2 Coral Right", score2CoralRight);
 
-    Command score1CoralLeftRed = new PathPlannerAuto("Score 1 Coral Left Red");
-    autoChooser.addOption("Score 1 Coral Left Red", score1CoralLeftRed);
+    Command score1CoralMiddle = new PathPlannerAuto("Score 1 Coral Middle");
+    autoChooser.addOption("Score 1 Coral Middle", score1CoralMiddle);
 
-    Command score1CoralRightRed = new PathPlannerAuto("Score 1 Coral Right Red");
-    autoChooser.addOption("Score 1 Coral Right Red", score1CoralRightRed);
-
-    Command score1CoralMiddleRed = new PathPlannerAuto("Score 1 Coral Middle Red");
-    autoChooser.addOption("Score 1 Coral Middle Red", score1CoralMiddleRed);
-
-    Command score1CoralRightBlue = new PathPlannerAuto("Score 1 Coral Right Blue");
-    autoChooser.addOption("Score 1 Coral Right Blue", score1CoralRightBlue);
-
-    Command score1CoralMiddleBlue = new PathPlannerAuto("Score 1 Coral Middle Blue");
-    autoChooser.addOption("Score 1 Coral Middle Blue", score1CoralMiddleBlue);
-
-
-
+    Command leaveRight = new PathPlannerAuto("Leave Right");
+    autoChooser.addOption("Leave Right", leaveRight);
   }
 
   private void configureDrivetrainCommands() {
@@ -251,7 +233,9 @@ public class RobotContainer {
                     .withVelocityY(
                         -oi.getTranslateY() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
-                        -oi.getRotate()
+                        (oi.getVisionRotatePressed()
+                                ? -oi.getRotate()
+                                : visionTracking.getRotation(-oi.getRotate()))
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 

@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Score 1 Coral Right Blue"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoScoring"
+            "pathName": "Leave Middle And Go Right"
           }
         }
       ]
