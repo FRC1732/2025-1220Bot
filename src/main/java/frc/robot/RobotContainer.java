@@ -31,6 +31,7 @@ import frc.robot.operator_interface.OISelector;
 import frc.robot.operator_interface.OperatorInterface;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralScoring;
+import frc.robot.subsystems.VisionTracking;
 import java.util.Optional;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -50,6 +51,7 @@ public class RobotContainer {
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
   public final CoralScoring coralScoring = new CoralScoring();
+  public final VisionTracking visionTracking = new VisionTracking();
 
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -231,7 +233,9 @@ public class RobotContainer {
                     .withVelocityY(
                         -oi.getTranslateY() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
-                        -oi.getRotate()
+                        (oi.getVisionRotatePressed()
+                                ? -oi.getRotate()
+                                : visionTracking.getRotation(-oi.getRotate()))
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 

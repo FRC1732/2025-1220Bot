@@ -90,4 +90,9 @@ public class DualJoysticksOI implements OperatorInterface {
   public Trigger getCoralReverseTrigger() {
     return translateJoystickButtons[2];
   }
+
+  @Override
+  public boolean getVisionRotatePressed() {
+    return rotateJoystickButtons[2].getAsBoolean();
+  }
 }

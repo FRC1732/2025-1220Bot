@@ -83,6 +83,10 @@ public interface OperatorInterface {
     return new Trigger(() -> false);
   }
 
+  public default boolean getVisionRotatePressed() {
+    return false;
+  }
+
   // drivetrain, game-specific
 
   // miscellaneous
