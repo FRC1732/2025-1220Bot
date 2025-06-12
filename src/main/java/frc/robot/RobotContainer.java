@@ -13,10 +13,12 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -101,6 +103,18 @@ public class RobotContainer {
     updateOI();
 
     configureAutoCommands();
+
+    setupLimeLight();
+  }
+
+  HttpCamera feed;
+
+  private void setupLimeLight() {
+    ShuffleboardTab tab = Shuffleboard.getTab("VisionApriltag");
+
+    feed = new HttpCamera("limelight-jeremy", "http://10.12.20.11:5800/stream.mjpg");
+
+    tab.add("Limelight Feed", feed).withWidget("Camera Stream").withPosition(0, 0).withSize(11, 4);
   }
 
   private void elasticSetup() {
