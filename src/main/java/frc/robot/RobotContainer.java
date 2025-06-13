@@ -196,6 +196,10 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "scoreCoral", newIntake.scoreForever(ArmConstants.armScoringSpeed::get));
     NamedCommands.registerCommand("stopScore", newIntake.scoreForever(() -> 0.0));
+    NamedCommands.registerCommand(
+        "setHpIntake", newIntake.scoreForever(ArmConstants.armIntakeSpeed::get));
+    NamedCommands.registerCommand(
+        "setHpIntakePose", new InstantCommand(() -> arm.setArmPose(ArmPose.HP_STATION)));
 
     new EventTrigger("Marker").onTrue(Commands.print("reached event marker"));
     new EventTrigger("ZoneMarker").onTrue(Commands.print("entered zone"));
@@ -206,14 +210,17 @@ public class RobotContainer {
     // add commands to the auto chooser
     autoChooser.addDefaultOption("Do Nothing", new InstantCommand());
 
-    Command getLeavePointsLeftRed = new PathPlannerAuto("Leave Left");
-    autoChooser.addOption("Leave Left", getLeavePointsLeftRed);
+    Command getLeavePointsLeft = new PathPlannerAuto("Leave Left");
+    autoChooser.addOption("Leave Left", getLeavePointsLeft);
 
-    Command getLeavePointsRightRed = new PathPlannerAuto("Leave Right");
-    autoChooser.addOption("Leave Right", getLeavePointsRightRed);
+    Command getLeavePointsRight = new PathPlannerAuto("Leave Right");
+    autoChooser.addOption("Leave Right", getLeavePointsRight);
 
     Command getLeavePointsMiddle = new PathPlannerAuto("Leave Middle");
     autoChooser.addOption("Leave Middle", getLeavePointsMiddle);
+
+    Command getLeaveLeft3Score = new PathPlannerAuto("Leave Left 3 Piece");
+    autoChooser.addOption("Leave Left 3 Piece", getLeaveLeft3Score);
 
     Shuffleboard.getTab("MAIN").add(autoChooser.getSendableChooser());
   }

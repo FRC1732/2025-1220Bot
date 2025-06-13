@@ -4,12 +4,13 @@ import frc.lib.team6328.util.LoggedTunableNumber;
 
 public class ArmConstants {
   // Define Arm position constants
-  public static Double positionIntakeCoral = 0.422;
-  public static Double positionClimbEnd = 0.368;
-  public static Double positionIntakeAlgae = 0.348;
-  public static Double positionRemoveAlgaeLow = 0.3083;
-  public static Double positionClimbStart = 0.233;
-  public static Double positionRemoveAlgaeHigh = 0.1;
+  // public static Double positionIntakeCoral = 0.422;
+  // public static Double positionClimbEnd = 0.368;
+  // public static Double positionIntakeAlgae = 0.348;
+  // public static Double positionRemoveAlgaeLow = 0.3083;
+  // public static Double positionClimbStart = 0.233;
+  // public static Double positionRemoveAlgaeHigh = 0.1;
+  // public static Double positionHPIntake = 70.0 / 360.0; // 70 degrees in radians
 
   public static final double armStartingAngleDegrees = 74.0;
   public static final double armL1CoralAngleDegrees = 48.0;
@@ -20,6 +21,7 @@ public class ArmConstants {
   public static final double armAglaeCompletePluck = 83.0;
   public static final double armAglaeCarry = 35.0;
   public static final double armAglaeFloorPickup = 33.0;
+  public static final double armHPStationAngleDegrees = 70.0;
 
   // Define Arm position limits
   public static Double armFrontLimitRadians = Math.PI / 2;

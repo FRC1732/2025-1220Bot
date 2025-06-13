@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0404605263157896,
-        "y": 5.978207236842105
+        "x": 3.1078125,
+        "y": 6.4015625
       },
       "isLocked": false,
       "linkedName": "R2"
@@ -20,8 +20,8 @@
         "y": 7.419964800938313
       },
       "prevControl": {
-        "x": 2.299486115626261,
-        "y": 6.526644736842105
+        "x": 2.6652138157894734,
+        "y": 6.10328947368421
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -53.0
+    "rotation": 125.66123718550553
   },
   "reversed": false,
   "folder": "Reefscape",

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.049508297201994,
-        "y": 7.082155309946405
+        "x": 2.8287828947368414,
+        "y": 6.651726973684211
       },
       "isLocked": false,
       "linkedName": "HP"
@@ -20,8 +20,8 @@
         "y": 5.219207186091618
       },
       "prevControl": {
-        "x": 3.5427242915976995,
-        "y": 5.647108905124098
+        "x": 3.0885690789473683,
+        "y": 5.978207236842105
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "Reefscape",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -53.0
+    "rotation": 125.66123718550553
   },
   "useDefaultConstraints": true
 }
