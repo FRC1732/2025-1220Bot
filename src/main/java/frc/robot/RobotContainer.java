@@ -222,6 +222,9 @@ public class RobotContainer {
     Command getLeaveLeft3Score = new PathPlannerAuto("Leave Left 3 Piece");
     autoChooser.addOption("Leave Left 3 Piece", getLeaveLeft3Score);
 
+    Command getLeaveRight3Score = new PathPlannerAuto("Leave Left 3 Piece", true);
+    autoChooser.addOption("Leave Right 3 Piece", getLeaveRight3Score);
+
     Shuffleboard.getTab("MAIN").add(autoChooser.getSendableChooser());
   }
 
