@@ -86,6 +86,11 @@ public class DualJoysticksOI implements OperatorInterface {
   // }
 
   @Override
+  public Trigger slowModeSwitchTrigger() {
+    return translateJoystickButtons[6];
+  }
+
+  @Override
   public Trigger getMoveToFloorPickupTrigger() {
     return rotateJoystickButtons[2];
   }

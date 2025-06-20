@@ -36,6 +36,7 @@ import frc.robot.subsystems.ArmPose;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.NewIntake;
+import java.util.function.BooleanSupplier;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -57,12 +58,18 @@ public class RobotContainer {
   public final Arm arm = new Arm();
   public final Climber climber = new Climber();
 
+  private boolean isSlowMode = false;
+  private BooleanSupplier slowModeSupplier = () -> isSlowMode;
+
   private double MaxSpeed =
       TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 1.0; // kSpeedAt12Volts desired top
   // speed
   private double MaxAngularRate =
       RotationsPerSecond.of(1.0)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+
+  private double MaxSlowSpeed = 0.25 * MaxSpeed; // 25% of max speed
+  private double MaxSlowAngularRate = 0.25 * MaxAngularRate; // 25% of max angular rate
 
   private final SwerveRequest.FieldCentric drive =
       new SwerveRequest.FieldCentric()
@@ -243,37 +250,31 @@ public class RobotContainer {
      */
     drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
+
         drivetrain.applyRequest(
             () ->
                 drive
                     .withVelocityX(
-                        -oi.getTranslateX() * MaxSpeed) // Drive forward with negative Y (forward)
+                        -oi.getTranslateX()
+                            * (slowModeSupplier.getAsBoolean()
+                                ? MaxSlowSpeed
+                                : MaxSpeed)) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -oi.getTranslateY() * MaxSpeed) // Drive left with negative X (left)
+                        -oi.getTranslateY()
+                            * (slowModeSupplier.getAsBoolean()
+                                ? MaxSlowSpeed
+                                : MaxSpeed)) // Drive left with negative X (left)
                     .withRotationalRate(
                         -oi.getRotate()
-                            * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                            * (slowModeSupplier.getAsBoolean()
+                                ? MaxSlowAngularRate
+                                : MaxAngularRate)) // Drive counterclockwise with negative X
+            // (left)
             ));
 
     // slow-mode toggle
-    /*
-     * oi.getTranslationSlowModeButton()
-     * .onTrue(
-     * Commands.runOnce(drivetrain::enableTranslationSlowMode, drivetrain)
-     * .withName("enable translation slow mode"));
-     * oi.getTranslationSlowModeButton()
-     * .onFalse(
-     * Commands.runOnce(drivetrain::disableTranslationSlowMode, drivetrain)
-     * .withName("disable translation slow mode"));
-     * oi.getRotationSlowModeButton()
-     * .onTrue(
-     * Commands.runOnce(drivetrain::enableRotationSlowMode, drivetrain)
-     * .withName("enable rotation slow mode"));
-     * oi.getRotationSlowModeButton()
-     * .onFalse(
-     * Commands.runOnce(drivetrain::disableRotationSlowMode, drivetrain)
-     * .withName("disable rotation slow mode"));
-     */
+    oi.slowModeSwitchTrigger().onTrue(Commands.runOnce(() -> isSlowMode = true));
+    oi.slowModeSwitchTrigger().onFalse(Commands.runOnce(() -> isSlowMode = false));
 
     // reset gyro to 0 degrees
     oi.getResetGyroButton()
