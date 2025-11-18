@@ -232,8 +232,8 @@ public class RobotContainer {
     Command getLeaveRight3Score = new PathPlannerAuto("Leave Left 3 Piece", true);
     autoChooser.addOption("Leave Right 3 Piece", getLeaveRight3Score);
 
-    Command creepMiddle = new PathPlannerAuto("Creep Middle");
-    autoChooser.addOption("Creep Middle", creepMiddle);
+    Command creepMiddle = new PathPlannerAuto("Creep and Score Middle");
+    autoChooser.addOption("Creep and Score Middle", creepMiddle);
 
     Shuffleboard.getTab("MAIN").add(autoChooser.getSendableChooser());
   }

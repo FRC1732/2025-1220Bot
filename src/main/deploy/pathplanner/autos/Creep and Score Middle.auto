@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "setL1Pose"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Rotate Middle"
